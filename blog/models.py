@@ -9,7 +9,19 @@ class Blog(models.Model):
     content=RichTextUploadingField()
     post_date=models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
-
-    #post_category = models.ForeignKey()
+    upvotes=models.IntegerField(default=0)
     def __str__(self):
         return self.Blog_id
+
+class Comment(models.Model):
+    blog_id=models.ForeignKey(Blog,on_delete=models.CASCADE)
+    content = RichTextUploadingField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_date=models.DateTimeField(auto_now_add=True)
+    upvotes=models.IntegerField(default=0)
+
+
+    def __str__(self):
+
+       return self.Comment_id
+
