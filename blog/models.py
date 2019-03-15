@@ -3,6 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
 
+class interest(models.Model):
+    interest_name=models.CharField(max_length=200)
+    content=RichTextUploadingField()
 
 class Blog(models.Model):
     heading=models.CharField(max_length=200)
@@ -10,6 +13,7 @@ class Blog(models.Model):
     post_date=models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     upvotes=models.IntegerField(default=0)
+    interests=models.ManyToManyField(interest)
     def __str__(self):
         return str(self.id)
 
@@ -24,4 +28,3 @@ class Comment(models.Model):
     def __str__(self):
 
        return self.Comment_id
-
