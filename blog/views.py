@@ -2,13 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404,redirect
 from .forms import story
+from .models import Blog
 # Create your views here.
 from django.contrib.auth.models import User
 def blog_display(request):
     if request.method == 'POST':
-        form = story(request.POST or None,instance=User.objects.get(username='shit'))
+        form = story(request.POST or None)
         if form.is_valid():
-            form.save()
+            heading = form.cleaned_data['heading']
+            Blog.objects.create(author=User.objects.get(username='shit'),heading=heading,content=form.cleaned_data['content'])
             return HttpResponse('Your story has been posted')
 
     else:

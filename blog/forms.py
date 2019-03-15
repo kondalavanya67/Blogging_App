@@ -9,7 +9,6 @@ class story(forms.ModelForm):
         model = Blog
         fields = (
             'heading',
-            'content'
         )
     def clean_heading(self):
         cleaned_data = super().clean()

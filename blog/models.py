@@ -11,7 +11,7 @@ class Blog(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     upvotes=models.IntegerField(default=0)
     def __str__(self):
-        return self.Blog_id
+        return str(self.id)
 
 class Comment(models.Model):
     blog_id=models.ForeignKey(Blog,on_delete=models.CASCADE)
