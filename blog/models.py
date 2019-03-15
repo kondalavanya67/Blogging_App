@@ -11,7 +11,7 @@ class Blog(models.Model):
     heading=models.CharField(max_length=200)
     content=RichTextUploadingField()
     post_date=models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    author = models.OneToOneField(User,on_delete=models.CASCADE)
     upvotes=models.IntegerField(default=0)
     interests=models.ManyToManyField(interest)
     def __str__(self):

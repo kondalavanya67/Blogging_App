@@ -6,11 +6,12 @@ from .models import Blog
 # Create your views here.
 from django.contrib.auth.models import User
 def blog_display(request):
+    user = request.user
     if request.method == 'POST':
         form = story(request.POST or None)
         if form.is_valid():
             heading = form.cleaned_data['heading']
-            Blog.objects.create(author=User.objects.get(username='shit'),heading=heading,content=form.cleaned_data['content'])
+            Blog.objects.create(author=user,heading=heading,content=form.cleaned_data['content'])
             return HttpResponse('Your story has been posted')
 
     else:
