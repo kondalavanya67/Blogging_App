@@ -6,7 +6,7 @@ from .models import Blog
 # Create your views here.
 from django.contrib.auth.models import User
 def blog_display(request):
-    user = request.user
+    user=request.user
     if request.method == 'POST':
         form = story(request.POST or None)
         if form.is_valid():
@@ -21,4 +21,3 @@ def blog_display(request):
 
 def create_story(request):
     return HttpResponse('Create Story HomePage')
-
