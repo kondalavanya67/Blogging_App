@@ -8,7 +8,7 @@ class interest(models.Model):
     content=RichTextUploadingField()
 
 class Blog(models.Model):
-    author= models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True)
+    author= models.ForeignKey(User, on_delete=models.CASCADE)
     heading=models.CharField(max_length=200)
     content=RichTextUploadingField()
     post_date=models.DateTimeField(auto_now_add=True)
