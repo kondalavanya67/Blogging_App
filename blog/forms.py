@@ -16,7 +16,7 @@ class story(forms.ModelForm):
         return heading
 
 class comment(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorUploadingWidget())
+    content = forms.CharField(widget=forms.Textarea(attrs={'cols': 100, 'rows': 2}))
     class Meta:
         model = Comment
         fields=(

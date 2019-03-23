@@ -30,7 +30,7 @@ def show_blog(request, blog_id):
     if request.method == 'POST':
         form = comment(request.POST or None)
         if form.is_valid():
-        
+
             Comment.objects.create(blog_id=blog,author=user,content=form.cleaned_data['content'])
             comments=Comment.objects.filter(blog_id=blog)
             return render(request,'blog.html',{'blog':blog , 'comments':comments,'form':comment()})
