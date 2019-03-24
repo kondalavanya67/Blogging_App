@@ -27,11 +27,11 @@ def show_blog(request, blog_id):
     user=request.user
     blog = get_object_or_404(Blog, pk=blog_id)
     comments=Comment.objects.filter(blog_id=blog)
-    if request.method == 'POST':
+    if request.method == 'POST' and request.is_ajax:
         form = comment(request.POST or None)
         if form.is_valid():
 
             Comment.objects.create(blog_id=blog,author=user,content=form.cleaned_data['content'])
             comments=Comment.objects.filter(blog_id=blog)
-            return render(request,'blog.html',{'blog':blog , 'comments':comments,'form':comment()})
+            # return render(request,'blog.html',{'blog':blog , 'comments':comments,'form':comment()})
     return render(request, 'blog.html', {'blog': blog, 'comments':comments,'form':comment()})
