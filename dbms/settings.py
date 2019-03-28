@@ -45,7 +45,12 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'dal',
     'dal_select2',
+    
+    
+
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
