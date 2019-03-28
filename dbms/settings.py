@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'home',
     'rest_framework',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'dal',
+    'dal_select2',
 ]
 
 MIDDLEWARE = [
