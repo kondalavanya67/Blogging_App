@@ -3,6 +3,7 @@ import random
 from django.db import models
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
+from blog.models import interest, Blog
 # Create your models here.
 
 
@@ -30,7 +31,7 @@ class LogData(models.Model):
 	email=models.CharField(max_length=120)
 	password = models.CharField(max_length=50)
 	
-class info(models.Model):
+class profile(models.Model):
 	user=models.ForeignKey(LogData, on_delete=models.CASCADE, null=True)
 	fullname=models.CharField(max_length=120)
 	age=models.IntegerField( default=25,
@@ -39,6 +40,9 @@ class info(models.Model):
 	phone_no=models.CharField(max_length=11)
 	image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
 	active=models.BooleanField(default=False)
+	interest=models.ManyToManyField(interest, blank=True)
+	post=models.ManyToManyField(Blog, blank=True)
+
 	
 
 	def __str__(self):
@@ -46,4 +50,18 @@ class info(models.Model):
 
 	def get_absolute_url(self):
 		return "/user/{id}/".format(id=self.id)
+
+	def get_absolute_url_profile(self):
+		return reverse('registration:show_profile',kwargs={'pk':self.pk})
+        
+
+class Follower(models.Model):
+    follower = models.ForeignKey(profile, related_name='following',on_delete=models.CASCADE)
+    following = models.ForeignKey(profile, related_name='followers',on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('follower', 'following')
+
+    def __unicode__(self):
+        return u'%s follows %s' % (self.follower, self.following)
     
