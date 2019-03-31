@@ -1,0 +1,78 @@
+{% block blog %}
+<html>
+<body>
+    <h1>{{blog.heading}}</h1>
+        {{blog.content|safe}}
+    <h3>Comments</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <input type="submit" value="Go!">
+    </form>
+    {% for comment in comments %}
+        <blockquote>
+            {% if not comment.parent %}
+                <p>{{comment.content|safe}}</p>
+                <footer>
+                via {{ comment.author }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }}
+               comment{% if comment.children.count > 1 %}s{% endif %}{% endif %} <button onclick="comment_show({{ comment }})">reply</button>
+                </footer>
+                <div class="comment-reply" id="{{ comment }}" style='display:none;'>
+                    {% for child_comment in comment.children %}
+                        <blockquote>
+                        {{child_comment.content|safe}}
+                        <footer>
+                        via {{ child_comment.author }} | {{ child_comment.timestamp|timesince }} ago | <button onclick="reply_show({{ child_comment }})">reply</button>
+                        </footer>
+                            <div class="comment-reply" id="{{ child_comment }}" style='display:none;'>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.media }}
+                                    <input type="hidden" name="parent_id" value = {{ comment.id }}>
+                                    <input type="text"  name="content" value="@{{ child_comment.author }} ">
+                                    <input type="submit" value="Reply!">
+                                </form>
+                            </div>
+                        </blockquote>
+                        <br>
+                    {% endfor %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        <input type="hidden" name="parent_id" value = {{ comment.id }}>
+                        {{ form.as_p }}
+                        <input type="submit" value="Reply!">
+                    </form>
+                </div>
+            {% endif %}
+    </blockquote>
+    <br>
+    {% endfor %}
+
+    <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+    <script>
+        function comment_show(z)
+        {
+            var x = document.getElementById(z);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+function reply_show(z)
+        {
+            var x = document.getElementById(z);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    </script>
+</body>
+</html>
+
+{% endblock %}
