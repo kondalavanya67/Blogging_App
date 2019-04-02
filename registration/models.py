@@ -4,6 +4,9 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from blog.models import interest, Blog
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 # Create your models here.
 
 
@@ -26,13 +29,9 @@ def upload_image_path(instance, filename):
 		             new_filename=new_filename,final_filename=final_filename)
 
 
-class LogData(models.Model):
-	user=models.CharField(primary_key=True, max_length=20)
-	email=models.CharField(max_length=120)
-	password = models.CharField(max_length=50)
 	
 class profile(models.Model):
-	user=models.ForeignKey(LogData, on_delete=models.CASCADE, null=True)
+	user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
 	fullname=models.CharField(max_length=120)
 	age=models.IntegerField( default=25,
         validators=[MaxValueValidator(100), MinValueValidator(1)])
@@ -65,3 +64,10 @@ class Follower(models.Model):
     def __unicode__(self):
         return u'%s follows %s' % (self.follower, self.following)
     
+
+
+
+# Create your models here.
+
+
+# Create your models here.
