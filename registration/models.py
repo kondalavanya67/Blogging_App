@@ -37,8 +37,8 @@ class profile(models.Model):
         validators=[MaxValueValidator(100), MinValueValidator(1)])
 	gender=models.CharField(max_length=10,choices=GENDER_CHOICES, default='male')
 	phone_no=models.CharField(max_length=11)
-	image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-	active=models.BooleanField(default=False)
+	#image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+	# active=models.BooleanField(default=False)
 	interest=models.ManyToManyField(interest, blank=True)
 	post=models.ManyToManyField(Blog, blank=True)
 

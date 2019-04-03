@@ -21,29 +21,30 @@ from django.db import connection,IntegrityError
 from django.contrib.auth.models import User, AbstractUser
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-
-
 from django import forms
+import psycopg2
 
+conn=psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="kalpa@123")
 
 def edit_profile(request):
     user = request.user
 
     form=profile_form(request.POST, request.FILES)
+    
 
     if form.is_valid():
-            
-        profile=form.save(commit=False)
-        profile.user=user
-        profile.save()
-        print("hello")
+
+        user_data=form.cleaned_data
+        curr = conn.cursor()
+        curr.execute("INSERT INTO registration_profile (user_id, fullname,gender, age,phone_no) VALUES (%d, %s, %s, %s,%s)",(user.id ,user_data['fullname'], user_data["gender"], user_data["age"],user_data["phone_no"]))
+
+        conn.commit()
         return redirect(reverse('registration:show_profile'))
 
         
 
     else:
         form=profile_form()
-        print("not hello")
 
     return render(request,'registration/modify_profile.html',{"form":form})
 
@@ -51,14 +52,13 @@ def edit_profile(request):
 
 
 def show_profile(request):
-    user = request.user.id
-    print(user)
-    profile1=get_object_or_404(profile, user=user)
-    context={
-       "profile":profile1,
-    }
-
-    return render(request,'registration/show_profile.html',context=context)
+    user = request.user
+    user_id=user.id
+    curr = conn.cursor()
+    curr.execute("SELECT * FROM registration_profile WHERE user_id= %s", [user_id])
+    row=curr.fetchone()
+    print(row)
+    return render(request,'registration/show_profile.html', {'profile':row })
    
 
 def login_page(request):
