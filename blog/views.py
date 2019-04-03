@@ -61,6 +61,7 @@ def show_blog(request, blog_id):
                 qs = Comment.objects.filter(id=parent_id)
                 if qs.count!=0:
                     p = qs.first()
+
             Comment.objects.create(blog_id=blog,author=user,content=form.cleaned_data['content'],parent=p)
             comments=Comment.objects.filter(blog_id=blog)
             # return render(request,'blog.html',{'blog':blog , 'comments':comments,'form':comment()})
