@@ -9,9 +9,9 @@
 {% block blog %}
 <html>
 <body>
-         <h1>{{blog.heading}}</h1>
-                                {{blog.content|safe}}
-<h3>Upvotes :<code id="comment">  {{blog.upvotes.count}} </code><code> &nbsp&nbsp </code><a class='like-btn' data-href='{{blog.get_upvote_api_url }}' href='{{blog.get_upvote_url }}'>Upvote </a></h3>
+         <h1>{{blog.1}}</h1>
+                                {{blog.2|safe}}
+<h3>Upvotes :<code id="comment">  {{blog1.upvotes.count}} </code><code> &nbsp&nbsp </code><a class='like-btn' data-href='{{blog1.get_upvote_api_url }}' href='{{blog1.get_upvote_url }}'>Upvote </a></h3>
 {#<textarea id="txt" style="width:600px; height:200px;"></textarea>#}
 {#<p id="preview">  {{blog.upvotes.count}}</p>#}
 
