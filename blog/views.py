@@ -27,13 +27,13 @@ def blog_display(request):
 def home(request):
     user=request.user
     data=Blog.objects.all()
-    conn = psycopg2.connect(host="localhost",database="blog", user="postgres", password="password")
+    conn = psycopg2.connect(host="127.0.0.1",port='5433', database="blog", user="postgres", password="password")
 
     cur = conn.cursor()
     heading = 'about me and my blog'
     content = 'hdzb'
     now = datetime.datetime.now()
-    i = interest.objects.get(interest_name='Health')
+    # i = interest.objects.get(interest_name='Health')
     cur.execute("SELECT author_id FROM blog_blog ORDER BY author_id")
     rows = cur.fetchall()
     # cur.execute("INSERT INTO blog_blog(author_id, heading,content,draft,post_date,interests_id) VALUES (%s,%s,%s,%s,%s,%s)", (user.id,heading,content,True,now,i.id))
