@@ -39,9 +39,7 @@ def edit_profile(request):
         curr.execute("INSERT INTO registration_profile (user_id, fullname,gender, age,phone_no) VALUES (%d, %s, %s, %s,%s)",(user.id ,user_data['fullname'], user_data["gender"], user_data["age"],user_data["phone_no"]))
 
         conn.commit()
-        return redirect(reverse('registration:show_profile'))
-
-        
+        return redirect(reverse('registration:show_profile'))       
 
     else:
         form=profile_form()
@@ -73,7 +71,6 @@ def login_page(request):
         password=form.cleaned_data.get("password")
         user=authenticate(request, username=username, password=password)
         if user is not None:
-
             print(user.is_authenticated)
             login(request, user)
             return redirect(reverse('registration:show_profile'))
