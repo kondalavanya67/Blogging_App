@@ -7,6 +7,7 @@ from blog.models import interest, Blog
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 # Create your models here.
 
 
@@ -40,7 +41,7 @@ class profile(models.Model):
 	image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
 	active=models.BooleanField(default=False)
 	interest=models.ManyToManyField(interest, blank=True)
-	post=models.ManyToManyField(Blog, blank=True)
+	#post=models.ManyToManyField(Blog, blank=True)
 
 
 
