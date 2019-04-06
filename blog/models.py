@@ -40,10 +40,12 @@ class Comment(models.Model):
     blog_id=models.ForeignKey(Blog,on_delete=models.CASCADE)
     content = models.TextField()
     author= models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
-    comment_date=models.DateTimeField(auto_now_add=True)
-    upvotes=models.IntegerField(default=0)
+    upvotes=models.ManyToManyField(User, blank=True, related_name='comment_likes')
+    parent=models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+    timestamp= models.DateField(auto_now_add=True)
 
 
     def __str__(self):
-
        return str(self.id)
+    def children(self):
+        return Comment.objects.filter(parent=self)   
