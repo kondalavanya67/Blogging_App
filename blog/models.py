@@ -6,7 +6,7 @@ from django.urls import reverse
 class interest(models.Model):
     interest_name=models.TextField()
     content=models.TextField()
-    base_image=models.ImageField(upload_to='media/interest/', blank=True)
+    base_image=models.ImageField(upload_to='media/interest/',null=True,blank=True)
     related_topics=models.ManyToManyField("self", blank=True)
 
     def __str__(self):

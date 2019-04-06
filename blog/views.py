@@ -5,6 +5,8 @@ from .forms import story, comment
 from .models import Blog, Comment, interest
 from dal import autocomplete
 from django.views.generic import RedirectView
+from rest_framework import status
+
 # Create your views here.
 from django.contrib.auth.models import User
 def blog_display(request):
@@ -56,6 +58,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
+from blog.serializer import BlogSerializer
+from blog.serializer import interestSerializer
 
 class BlogLikeAPI(APIView):
 
@@ -94,3 +98,27 @@ class InterestAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(interest_name__istartswith=self.q)
         #print(qs)
         return qs
+
+class interestView(APIView):
+    def get(self,request):
+        int1 = interest.objects.all()
+        serializer = interestSerializer(int1, many=True)
+        return Response(serializer.data)
+    def post(self,request):
+        serializer = interestSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+
+class BlogView(APIView):
+    def get(self,request):
+        int1 = Blog.objects.all()
+        serializer = BlogSerializer(int1, many=True)
+        return Response(serializer.data)
+    def post(self,request):
+        serializer = BlogSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
