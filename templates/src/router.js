@@ -5,6 +5,7 @@ import Interest from './views/Interest.vue'
 import Post from './views/Post.vue'
 import Profile from './views/Profile.vue'
 
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,7 +31,7 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
-    }
+    },
    
   ]
 })
