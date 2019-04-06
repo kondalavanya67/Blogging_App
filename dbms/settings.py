@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '^)4ko&0c(k=b9#ixrl9td0jvfsyxs&@(ii+1wsrgv24f6qc2ai'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -46,11 +44,7 @@ INSTALLED_APPS = [
     'dal',
     'dal_select2',
 
-
-
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dbms.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -105,7 +98,6 @@ EMAIL_HOST_USER = 'smarthealthcaresystemiiits@gmail.com'
 EMAIL_HOST_PASSWORD = 'dbmsproject@123'
 EMAIL_USE_TLS = True
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -124,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -137,7 +128,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -159,8 +149,6 @@ CKEDITOR_CONFIGS = {
         'toolbar': None,
     },
 }
-
-
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
