@@ -4,7 +4,9 @@
             <v-toolbar flat app color="white">
                 <v-toolbar-title>
                 <span class="font-weight-bold text-uppercase">
-                    OASP
+                    <router-link class="logo" tag="span" to="/">
+                        OASP
+                    </router-link>
                 </span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -12,17 +14,28 @@
                         hide-details
                         prepend-icon="search"
                         single-line
+                        class="mx-2"
                 ></v-text-field>
-                <v-btn flat color="black">Sign Up</v-btn>
-                <v-btn flat color="black">Log In</v-btn>
+                
+                <Blog />
+               
+                <v-btn outline color="primary" flat >Sign Up</v-btn>
+                <v-btn outline color="primary" flat >Log In</v-btn>
             </v-toolbar>
         </nav>
     </div>
 </template>
 
 <script>
+import Blog from './Blog'
+
 export default {
     name:'Navbar',
+
+    components:{
+        Blog
+    },
+
     data(){
         return{
         }
@@ -35,6 +48,8 @@ export default {
 </script>
 
 <style scoped> 
-
+    .logo{
+        cursor:pointer;
+    }
 </style>
 
