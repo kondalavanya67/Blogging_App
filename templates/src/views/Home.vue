@@ -55,17 +55,26 @@
 
   async mounted(){
     var prop = this.$store.state.feed
-    var url = 'https://newsapi.org/v2/everything?' +
-          'q=' + prop + '&'+
-          'from=2019-03-29&' +
-          'sortBy=popularity&' +
-          'apiKey=ed7767f07ae745dd9a229ca0b63d3a92';
+    // var url = 'https://newsapi.org/v2/everything?' +
+    //       'q=' + prop + '&'+
+    //       'from=2019-03-29&' +
+    //       'sortBy=popularity&' +
+    //       'apiKey=ed7767f07ae745dd9a229ca0b63d3a92';
 
-      var req = new Request(url);
-      this.$store.state.blogData = await fetch(req)
-                          .then(function(response) {
-                          return response.json();
-                      })
+    //   var req = new Request(url);
+    //   this.$store.state.blogData = await fetch(req)
+    //                       .then(function(response) {
+    //                       return response.json();
+    //                   })
+    
+    var url = 'http://localhost:8000/api/interest/'+prop;
+    this.$store.state.blogData = axios.get(url)
+                                  .then(function (response) {
+                                    return response.json();
+                                  })
+                                  .catch(function (error) {
+                                    console.log(error);
+                                  });
   },
 
     methods: {
