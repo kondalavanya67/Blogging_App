@@ -43,12 +43,13 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'dal',
     'dal_select2',
-
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -57,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'dbms.urls'
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
@@ -156,3 +158,5 @@ EMAIL_HOST_USER = 'iiits2021'
 EMAIL_HOST_PASSWORD = 'qwerty@123'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+

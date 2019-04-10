@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class interest(models.Model):
     interest_name = models.TextField()
-    content = models.TextField()
+    content = models.TextField(null=True)
     base_image = models.ImageField(upload_to='media/interest/', null=True, blank=True)
     related_topics = models.ManyToManyField("self", blank=True)
 
@@ -19,6 +19,7 @@ class interest(models.Model):
 
 class Blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    cover_photo =  models.TextField()
     heading = models.CharField(max_length=200)
     content = RichTextUploadingField()
     draft = models.BooleanField(default=False)
