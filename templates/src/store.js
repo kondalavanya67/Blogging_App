@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
 
     blogData: null,
 
-    feed: 'Apple'
+    feed: 'Technology'
 
   },
 
@@ -43,17 +43,23 @@ export const store = new Vuex.Store({
   actions: {
   
     async queryTopic({commit}, prop ){
-      var url = 'https://newsapi.org/v2/everything?' +
-          'q=' + prop + '&'+
-          'from=2019-04-04&' +
-          'sortBy=popularity&' +
-          'apiKey=ed7767f07ae745dd9a229ca0b63d3a92';
+      // var url = 'https://newsapi.org/v2/everything?' +
+      //     'q=' + prop + '&'+
+      //     'from=2019-04-04&' +
+      //     'sortBy=popularity&' +
+      //     'apiKey=ed7767f07ae745dd9a229ca0b63d3a92';
 
-      var req = new Request(url);
+      // var req = new Request(url);
+      // var dataBlog = await fetch(req)
+      //                     .then(function(response) {
+      //                     return response.json();
+      //                 })
+      var url = 'http://localhost:8000/api/Blog/'+prop;
+      var req = new Request(url)
       var dataBlog = await fetch(req)
-                          .then(function(response) {
-                          return response.json();
-                      })
+                                    .then(function (response) {
+                                      return response.json();
+                                    });
       commit('updateBlogData',dataBlog)
       
       }

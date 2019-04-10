@@ -6,7 +6,7 @@
     <v-layout row>
       <v-flex xs12 sm12 md12 lg8>
         <!-- {{getBlogData.articles}} -->
-        <BlogCard v-for="blog in getBlogData.articles" :key="blog.title" v-bind:blog="blog"  />
+        <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog"  />
         <!-- <div v-for="blog in blogData.articles" :key="blog.title">
           {{blog.urlToImage}}
         </div> -->
@@ -32,6 +32,7 @@
   import BlogCard from '../components/blog-card'
   import SubNav from '../components/SubNav'
   import {mapGetters} from 'vuex'
+  // import axios from 'axios'
 
   export default {
     name:'Home',
@@ -67,14 +68,13 @@
     //                       return response.json();
     //                   })
     
-    var url = 'http://localhost:8000/api/interest/'+prop;
-    this.$store.state.blogData = axios.get(url)
+    var url = 'http://localhost:8000/api/Blog/'+prop;
+    var req = new Request(url)
+    this.$store.state.blogData = await fetch(req)
                                   .then(function (response) {
                                     return response.json();
                                   })
-                                  .catch(function (error) {
-                                    console.log(error);
-                                  });
+                                
   },
 
     methods: {

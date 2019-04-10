@@ -3,11 +3,11 @@
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <template v-slot:activator="{ on }">
         
-            <router-li tag="btn" to="/compose">
+            
             <v-btn flat outline color="primary" v-on="on" class="mx-2">
                 Create Post
             </v-btn>
-            </router-li>
+            
         
       </template>
       

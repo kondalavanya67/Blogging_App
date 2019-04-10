@@ -159,8 +159,8 @@ class InterestAutocomplete(autocomplete.Select2QuerySetView):
 
 
 class interestView(APIView):
-    def get(self,request,blog_id):
-        int1 = interest.objects.filter(interest_name=blog_id)
+    def get(self,request,interest_name):
+        int1 = interest.objects.filter(interest_name=interest_name)
         serializer = interestSerializer(int1, many=True)
         return Response(serializer.data)
 
@@ -179,10 +179,9 @@ class BlogView(APIView):
         if int1.exists():
             int1=interest.objects.get(interest_name=interest_name)
 
-        int1 = Blog.objects.filter(interests=int1)
-        if int1.exists():
-
-            serializer = BlogSerializer(int1, many=True)
+        int2 = Blog.objects.filter(interests=int1)
+        if int2.exists():
+            serializer = BlogSerializer(int2, many=True)
             return Response(serializer.data)
     def post(self,request):
         serializer = BlogSerializer(data=request.data)

@@ -5,7 +5,7 @@
                 <v-layout row>
                     <v-flex xs12 sm12 lg4 md3>
                         <v-img
-                                :src="blog.urlToImage"
+                                :src="blog.cover_photo"
                                 height="100%"
                         ></v-img>
                     </v-flex>
@@ -14,17 +14,17 @@
                     <v-flex xs12 sm12 lg7 md9>
                         <v-card-title primary-title>
                             <div class="">
-                                <h3 class="display-1 font-weight-bold md-0">{{blog.title | truncate(60) }}</h3>
+                                <h3 class="display-1 font-weight-bold md-0">{{blog.heading | truncate(60) }}</h3>
 
                                 <v-layout row>
-                                    <span class="mr-2">{{blog.author | truncate(20)}}</span>
+                                    <span class="mr-2">{{blog.author.username | truncate(20)}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
-                                    <span class="mx-2">{{blog.publishedAt}}</span>
+                                    <span class="mx-2">{{blog.post_date}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
                                     <span class="mx-2">7 Min Read</span>
                                 </v-layout>
 
-                                <div class="py-4">{{blog.description | truncate(170) }}</div>
+                                <div class="py-4">{{blog.content | truncate(170) }}</div>
 
                                 <v-layout row align-items-start>
 
@@ -68,12 +68,11 @@ export default {
     name:'BlogCard',
     props:{
         blog:{
-            author:String,
+            author:Object,
             content:String,
-            description:String,
-            publishedAt:String,
-            title:String,
-            urlToImage:String
+            post_date:String,
+            heading:String,
+            cover_photo:String
         }
     }
 }

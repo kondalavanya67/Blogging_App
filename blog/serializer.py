@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import interest, Blog, Comment
-
+from django.contrib.auth.models import User
 
 class interestSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,20 +23,23 @@ class bloginterestSerializer(serializers.ModelSerializer):
         model = interest
         fields = ('interest_name',)
 
-
+class blogauthorserealizer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username',)
 class BlogSerializer(serializers.ModelSerializer):
     interests = bloginterestSerializer()
-
+    author = blogauthorserealizer()
     class Meta:
         model = Blog
-        fields = ('author', 'heading', 'draft', 'content', 'upvotes', 'post_date', 'interests')
+        fields = ('author', 'heading', 'content', 'upvotes', 'post_date', 'interests','cover_photo')
 
     def create(self, validated_data):
         author = validated_data['author']
         heading = validated_data['heading']
         draft = validated_data['draft']
         content = validated_data['content']
-        upvotes = validated_data['upvotes']
+        #upvotes = validated_data['upvotes']
         # post_date=validated_data['post_date']
         interests = validated_data['interests']
         qs = interest.objects.filter(interest_name=interests['interest_name'])
@@ -45,7 +48,7 @@ class BlogSerializer(serializers.ModelSerializer):
             interest_var = interest.objects.get(interest_name=interests['interest_name'])
             Blog1 = Blog.objects.create(author=author, heading=heading, draft=draft, content=content,
                                         interests=interest_var)
-            for each in upvotes:
-                Blog1.upvotes.add(each)
-            Blog1.save()
+            # for each in upvotes:
+            #     Blog1.upvotes.add(each)
+            # Blog1.save()
             return Blog1
