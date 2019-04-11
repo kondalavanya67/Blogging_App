@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
-    url(r'^api/interest/(?P<interest_name>[a-z A-z]+)$',views.interestView.as_view()),
+    url(r'^api/create_blog/',views.createView.as_view()),
     url(r'^api/Blog/(?P<interest_name>[a-z A-z]+)$', views.BlogView.as_view()),
     url(r'^users/', include('registration.urls')),
     path('home/',include('blog.urls'))

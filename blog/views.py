@@ -158,15 +158,15 @@ class InterestAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
-class interestView(APIView):
-    def get(self,request,interest_name):
-        int1 = interest.objects.filter(interest_name=interest_name)
-        serializer = interestSerializer(int1, many=True)
-        return Response(serializer.data)
+class createView(APIView):
 
     def post(self, request):
+        print(request.data)
+        request.data['author'] = User.objects.get(username=request.user).id
+        print(request.data)
         serializer = interestSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
+            #print(serializer.author.username)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
