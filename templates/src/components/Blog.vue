@@ -18,7 +18,7 @@
           <v-spacer></v-spacer>
        
         <v-btn outline color="primary" flat @click="dialog = false">Draft</v-btn>
-        <v-btn outline color="primary" flat @click="dialog = false">Post</v-btn>
+        <v-btn outline color="primary" flat @click="addPost">Post</v-btn>
         
         </v-toolbar>
 
@@ -27,7 +27,7 @@
         <v-layout row wrap>
             <v-flex xs12 sm6 md12 lg12>
                 <v-flex xs12 sm6 md6 lg6>
-                   <input type="text" id="title" placeholder="Untitled Post" class="title">
+                   <input v-model="heading" type="text" id="title" placeholder="Untitled Post" class="title">{{heading}}
                 </v-flex>
             </v-flex>
             <v-layout row>
@@ -81,6 +81,7 @@
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import axios from 'axios'
 
 export default {
     name:'Blog',
@@ -102,7 +103,19 @@ export default {
         editorConfig: {
             // The configuration of the editor.
         }
-    })
+    }),
+
+    methods: {
+        async addPost(){
+            axios.post('http://localhost:8000/api/post', {
+                heading: heading,
+                content: this.editorData
+            } )
+            .then(
+                this.dialog = false
+            )
+        }
+    },
 }
 </script>
 
