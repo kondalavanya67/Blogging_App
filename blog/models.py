@@ -19,7 +19,7 @@ class interest(models.Model):
 
 class Blog(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    cover_photo =  models.TextField()
+    cover_photo =  models.TextField(null=True,blank=True)
     heading = models.CharField(max_length=200)
     content = RichTextUploadingField()
     draft = models.BooleanField(default=False)

@@ -15,13 +15,13 @@ class interestSerializer(serializers.ModelSerializer):
         # upvotes = validated_data['upvotes']
         # post_date=validated_data['post_date']
         interests = validated_data['interests']
-        cover_photo = validated_data['cover_photo']
+        #cover_photo = validated_data['cover_photo']
         qs = interest.objects.filter(interest_name=interests)
         print(interests)
         if qs.exists():
             interest_var = interest.objects.get(interest_name=interests)
             Blog1 = Blog.objects.create(author=author, heading=heading, content=content,
-                                        interests=interest_var,cover_photo=cover_photo)
+                                        interests=interest_var)#cover_photo=cover_photo)
             return Blog1
 
 

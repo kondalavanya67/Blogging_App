@@ -162,8 +162,6 @@ class createView(APIView):
 
     def post(self, request):
         print(request.data)
-        request.data['author'] = User.objects.get(username=request.user).id
-        print(request.data)
         serializer = interestSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             #print(serializer.author.username)
