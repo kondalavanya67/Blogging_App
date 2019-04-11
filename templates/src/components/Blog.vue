@@ -95,6 +95,7 @@ export default {
         ],
         right: null,
 
+        heading: '',
         notifications: false,
         sound: true,
         widgets: false,
@@ -108,7 +109,7 @@ export default {
     methods: {
         async addPost(){
             axios.post('http://localhost:8000/api/post', {
-                heading: heading,
+                heading: this.heading,
                 content: this.editorData
             } )
             .then(
