@@ -20,7 +20,7 @@ export const store = new Vuex.Store({
 
     blogData: null,
 
-    feed: 'Technology'
+    feed: 'Technology',
 
   },
 
@@ -43,6 +43,7 @@ export const store = new Vuex.Store({
   actions: {
   
     async queryTopic({commit}, prop ){
+
       // var url = 'https://newsapi.org/v2/everything?' +
       //     'q=' + prop + '&'+
       //     'from=2019-04-04&' +
@@ -54,6 +55,8 @@ export const store = new Vuex.Store({
       //                     .then(function(response) {
       //                     return response.json();
       //                 })
+                      
+
       var url = 'http://localhost:8000/api/Blog/'+prop;
       var req = new Request(url)
       var dataBlog = await fetch(req)
