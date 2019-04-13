@@ -5,7 +5,7 @@
                <SideMenu v-bind:items="profile"/>
           </v-flex>
           <v-flex md10 lg10>
-
+            
           </v-flex>
       </v-layout>
   </v-container>
@@ -14,6 +14,7 @@
 
 <script>
 import SideMenu from '../components/side-menu'
+import { mapState } from 'vuex';
 
 export default {
     name:'Profile',
@@ -22,15 +23,13 @@ export default {
     },
     data: () => ({
       width: 300,
-      profile:[
-          {title:'Profile'},
-          {title:'Posts'},
-          {title:'Likes'},
-          {title:'Bookmarks'},
-          {title:'Followers'},
-          {title:'Following'},
-      ]
-    })
+    }),
+
+    computed: {
+      ...mapState([
+        'profile'
+      ])
+    },
 }
 </script>
 
