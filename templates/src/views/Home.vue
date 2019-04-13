@@ -13,7 +13,7 @@
        
       </v-flex>
       <v-flex xs12 sm12 md12 lg4 class="px-5 pb-5">
-        <h1>Latest Posts</h1>
+        <h2 class="pb-3">Latest Posts</h2>
         <FeaturedBlogCard />
         <FeaturedBlogCard />
         <FeaturedBlogCard />
