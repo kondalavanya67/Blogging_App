@@ -5,11 +5,12 @@
                <SideMenu v-bind:items="profile"/>
           </v-flex>
           <v-flex md10 lg10 class="px-3">  
+          
             <div v-if="this.$store.state.tab == 'Profile'">
               <v-layout row>
                     <v-flex xs12 sm12 lg4 md3>
                         <v-img
-                                :src="`http://picsum.photos/300`"
+                                :src="`http://picsum.photos/100`"
                                 height="100%"
                                 class="user-avatar"
                         ></v-img>
@@ -67,7 +68,7 @@
                 <v-list-tile-content>
                   <v-list-tile-title v-text="item.title" class="pl-3"></v-list-tile-title>
                 </v-list-tile-content>
-                  
+                
                 </v-list-tile>
               </v-list>
             </div>
@@ -128,9 +129,5 @@ export default {
     border-radius: 50%;
   }
 
-  .follower-avatart{
-    width:70!important;
-    height:70!important;
-  }
 
 </style>
