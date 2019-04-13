@@ -34,16 +34,16 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field v-model="fullName" label="Full name*" required></v-text-field>
+                                <v-text-field v-model="fullName" label="Username*" required></v-text-field>
                             </v-flex>
                             
                             <v-flex xs12>
                                 <v-text-field v-model="email" label="Email*" required></v-text-field>
                             </v-flex>
-                            <v-flex xs6>
+                            <v-flex xs5>
                                 <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
                             </v-flex>
-                            <v-flex xs6>
+                            <v-flex xs5 class="ml-2">
                                 <v-text-field v-model="password1" label="Confirm Password*" type="password" required></v-text-field>
                             </v-flex>
                             </v-layout>
@@ -72,9 +72,42 @@
                     </v-card>
                 </v-dialog>
 
+                
 
-                <v-btn outline color="primary" flat >Log In</v-btn>
+                <v-dialog v-model="dialog3" persistent max-width="600px">
+                    <template v-slot:activator="{ on }">
+                        <v-btn outline color="primary" flat v-on="on">Log In</v-btn>
+                    </template>
+                    <v-card>
+                        <v-card-title>
+                        <span class="display-1 font-weight-bold pl-3">Log In</span>
+                        <v-spacer></v-spacer>
+                        <v-btn fab color="blue darken-1" flat @click="dialog3 = false"><v-icon>cancel</v-icon></v-btn>
+                        </v-card-title>
+                        <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout wrap>
+                            <v-flex xs12>
+                                <v-text-field v-model="fullName" label="Username*" required></v-text-field>
+                            </v-flex>
+                        
+                            <v-flex xs12>
+                                <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
+                            </v-flex>
+    
+                            </v-layout>
+                        </v-container>
+                        <small class="pl-3">*indicates required field</small>
+                        </v-card-text>
+                        <v-card-actions>
+                        
+                        <v-btn large dark color="blue darken-1 ml-3 mb-3" flat @click="sendLoginData">Login</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
 
+
+                
             </v-toolbar>
         </nav>
     </div>
@@ -95,6 +128,7 @@ export default {
         return{
             dialog: false,
             dialog2: false,
+            dialog3: false,
             fullName: '',
             email: '',
             password: '',
@@ -126,6 +160,17 @@ export default {
             .then(
                 this.dialog2 = false,
                 this.dialog = false
+            )
+        },
+
+
+        async sendLoginData(){
+            axios.post('http://localhost:8000/api/login/', {
+                username: this.username,
+                password: this.password
+            })
+            .then(
+                this.dialog3 = false
             )
         }
     }
