@@ -2,11 +2,8 @@
     <div>
       <v-navigation-drawer permanent>
             <v-list class="pt-0 pl-2">
-                <v-flex  v-for="item in items" :key="item.title">
-                  <router-view></router-view>
-                  <router-link tag="li" to="'/profile/'+'item.title'" class="route">
+                <v-flex  v-for="item in items" :key="item.title" @click="showProfile()">
                     <p class="headline font-weight-bold">{{ item.title }}</p>
-                  </router-link>
                 </v-flex>
             </v-list>
         </v-navigation-drawer>  
