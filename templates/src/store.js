@@ -37,7 +37,7 @@ export const store = new Vuex.Store({
     { title: 'Fashion'},
     { title: 'Fitness'}
   ],
-    tab:''
+    tab:null
   },
 
 
