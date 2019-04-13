@@ -27,7 +27,7 @@
         <v-layout row wrap>
             <v-flex xs12 sm6 md12 lg12>
                 <v-flex xs12 sm6 md6 lg6>
-                   <input v-model="heading" type="text" id="title" placeholder="Untitled Post" class="title">{{heading}}
+                   <input v-model="heading" type="text" id="title" placeholder="Untitled Post" class="title">
                 </v-flex>
             </v-flex>
             <v-layout row>
@@ -108,9 +108,11 @@ export default {
 
     methods: {
         async addPost(){
-            axios.post('http://localhost:8000/api/post', {
+            axios.post('http://localhost:8000/api/create_blog/', {
                 heading: this.heading,
-                content: this.editorData
+                content: this.editorData,
+                author : 1,
+                interests : 2,
             } )
             .then(
                 this.dialog = false
