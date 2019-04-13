@@ -4,7 +4,7 @@
         <v-container>
             <v-layout row>
                 <v-flex lg3 md3>
-                    <SideMenu v-bind:items="interests"/>
+                    <SideMenu v-bind:items="getTopics"/>
                 </v-flex>
                 <v-flex lg9 md9>
                     <v-layout row wrap class="">
@@ -21,6 +21,7 @@
 import InterestCard from '../components/interest-card'
 import SideMenu from '../components/side-menu'
 import SubNav from '../components/SubNav'
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'Interest',
@@ -32,11 +33,15 @@ export default {
     },
 
     data: () => ({
-         interests: [
-          { title: 'Technology'},
-          { title: 'Fashion'},
-          { title: 'Fitness'}
-        ]
-    })
+    }),
+
+    computed: {
+         ...mapGetters([
+            'getTopics'
+        ])
+    },
+       
+    
+
 }
 </script>
