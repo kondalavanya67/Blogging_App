@@ -30,7 +30,7 @@
                    <input v-model="heading" type="text" id="title" placeholder="Untitled Post" class="title">
                 </v-flex>
             </v-flex>
-            <v-layout row wrap class="mt-5 mb-3">  
+            <v-layout row wrap class="mt-3 mb-3">  
                 <v-flex xs12 sm6 md6>
                     <v-text-field
                         label="Set Image URL"
