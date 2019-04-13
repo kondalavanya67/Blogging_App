@@ -22,6 +22,14 @@ export const store = new Vuex.Store({
 
     feed: 'Technology',
 
+    profile:[
+      {title:'Profile'},
+      {title:'Posts'},
+      {title:'Likes'},
+      {title:'Bookmarks'},
+      {title:'Followers'},
+      {title:'Following'},
+   ]
   },
 
 
