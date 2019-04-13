@@ -25,11 +25,19 @@ export const store = new Vuex.Store({
     profile:[
       {title:'Profile'},
       {title:'Posts'},
+      {title:'Drafts'},
       {title:'Likes'},
       {title:'Bookmarks'},
       {title:'Followers'},
       {title:'Following'},
-   ]
+   ],
+
+   topics: [
+    { title: 'Technology'},
+    { title: 'Fashion'},
+    { title: 'Fitness'}
+  ],
+    tab:''
   },
 
 
@@ -38,13 +46,18 @@ export const store = new Vuex.Store({
 
     getTags: state => state.tags,
 
-    getBlogData: state => state.blogData
+    getBlogData: state => state.blogData,
+
+    getTopics: state => state.topics
   },
 
 
   mutations: {
     updateBlogData(state,prop){
       state.blogData = prop;
+    },
+    updateTab(state, value){
+      state.tab = value
     }
   },
   
@@ -73,7 +86,6 @@ export const store = new Vuex.Store({
                                     });
       commit('updateBlogData',dataBlog)
       
-      }
+      },
     }
-  
 })
