@@ -1,12 +1,9 @@
 <template>
-    <div>
+    <div class="sidemenu">
       <v-navigation-drawer permanent>
             <v-list class="pt-0 pl-2">
-                <v-flex  v-for="item in items" :key="item.title">
-                  <router-view></router-view>
-                  <router-link tag="li" to="'/profile/'+'item.title'" class="route">
-                    <p class="headline font-weight-bold">{{ item.title }}</p>
-                  </router-link>
+                <v-flex  v-for="item in items" :key="item.title" @click="showProfile()">
+                  <p class="headline font-weight-bold link" @click="updateTab(item.title)">{{ item.title }}</p>
                 </v-flex>
             </v-list>
         </v-navigation-drawer>  
@@ -14,6 +11,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
     name:'SideMenu',
     props:{
@@ -23,12 +21,27 @@ export default {
       return {
         right: null
       }
-    }
+    },
+
+    methods: {
+      ...mapMutations([
+        'updateTab'
+      ])
+    },
 }
 </script>
 
-<style lang="css">
+<style lang="css" >
   .route{
+    cursor:pointer;
+  }
+  .sidemenu{
+    position:fixed;
+  }
+  .theme--light.v-navigation-drawer:not(.v-navigation-drawer--floating) .v-navigation-drawer__border {
+    background-color:rgb(255,255,255) ! important; 
+}
+  .link{
     cursor:pointer;
   }
 </style>

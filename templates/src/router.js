@@ -32,6 +32,11 @@ export default new Router({
       name: 'profile',
       component: Profile
     },
+    {
+      path: '/poat',
+      name: 'post',
+      component: Post
+    },
    
   ]
 })

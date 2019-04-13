@@ -30,40 +30,12 @@
                    <input v-model="heading" type="text" id="title" placeholder="Untitled Post" class="title">
                 </v-flex>
             </v-flex>
-            <v-layout row>
-                <v-dialog v-model="file"  width="600px">
-                    <template v-slot:activator="{ on }">
-                        <v-flex class="my-4 picture-box py-5" xs12 sm12 md12 lg12 v-on="on">
-                            <p class="text-xs-center"><v-icon>camera_alt</v-icon>    Set Cover Photo ( displays as 760 x 300 )</p>
-                        </v-flex>
-                    </template>
-                    <v-card>
-                          <v-navigation-drawer
-                            floating
-                            permanent
-                            stateless
-                            value="true"
-                            >
-                            <v-list dense>
-                            <v-list-tile
-                                v-for="item in items"
-                                :key="item.title"
-                            >
-                                <v-list-tile-action>
-                                <v-icon>{{ item.icon }}</v-icon>
-                                </v-list-tile-action>
-
-                                <v-list-tile-content>
-                                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                </v-list-tile-content>
-                            </v-list-tile>
-                            </v-list>
-                        </v-navigation-drawer>
-                        <v-flex>
-                            
-                        </v-flex>
-                    </v-card>
-                </v-dialog>
+            <v-layout row wrap class="mt-3 mb-3">  
+                <v-flex xs12 sm6 md6>
+                    <v-text-field
+                        label="Set Image URL"
+                    ></v-text-field>
+                </v-flex> 
             </v-layout>
             <v-flex lg12 md12 sm12 xs12 class="py-3">
                 <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
@@ -127,7 +99,6 @@ export default {
     .picture-box{
         border-style: dotted;
         height: 130px;
-        cursor: pointer;
     }
     .title{
         font-size: 2.7rem!important;
