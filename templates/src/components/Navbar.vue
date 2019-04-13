@@ -27,46 +27,47 @@
                     <v-card>
                         <v-card-title>
                         <span class="display-1 font-weight-bold pl-3">Sign Up</span>
+                        <v-spacer></v-spacer>
+                        <v-btn fab color="blue darken-1" flat @click="dialog = false"><v-icon>cancel</v-icon></v-btn>
                         </v-card-title>
                         <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-                            <v-flex xs12 sm6 md4>
-                                <v-text-field label="First name*" required></v-text-field>
+                            <v-flex xs12>
+                                <v-text-field v-model="fullName" label="Full name*" required></v-text-field>
                             </v-flex>
                             
-                            <v-flex xs12 sm6 md4>
-                                <v-text-field label="Last name*" required></v-text-field>
-                            </v-flex>
-
                             <v-flex xs12>
-                                <v-text-field label="Email*" required></v-text-field>
+                                <v-text-field v-model="email" label="Email*" required></v-text-field>
                             </v-flex>
-                            <v-flex xs12>
-                                <v-text-field label="Password*" type="password" required></v-text-field>
+                            <v-flex xs6>
+                                <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-select
-                                :items="['0-17', '18-29', '30-54', '54+']"
-                                label="Age*"
-                                required
-                                ></v-select>
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <v-autocomplete
-                                :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                label="Interests"
-                                multiple
-                                ></v-autocomplete>
+                            <v-flex xs6>
+                                <v-text-field v-model="password1" label="Confirm Password*" type="password" required></v-text-field>
                             </v-flex>
                             </v-layout>
                         </v-container>
-                        <small>*indicates required field</small>
+                        <small class="pl-3">*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-                        <v-btn color="blue darken-1" flat @click="dialog = false">Sign Up</v-btn>
+                        
+                        <v-btn large dark color="blue darken-1 ml-3 mb-3" flat @click="sendData">Next</v-btn>
+                        <v-dialog v-model="dialog2" max-width="500px">
+                            <v-card>
+                                <v-card-title class="headline font-weight-bold">
+                                    Please Enter Your Six Digit OTP
+                                </v-card-title>
+                                <v-card-text>
+                                <v-flex xs6>
+                                    <v-text-field v-model="otp" label="Enter OTP Here*" type="text" required></v-text-field>
+                                </v-flex>
+                                </v-card-text>
+                                <v-card-actions>
+                                <v-btn color="primary" flat @click="sendOTP">Next</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -81,6 +82,7 @@
 
 <script>
 import Blog from './Blog'
+import axios from 'axios'
 
 export default {
     name:'Navbar',
@@ -91,11 +93,41 @@ export default {
 
     data(){
         return{
-            dialog: false
+            dialog: false,
+            dialog2: false,
+            fullName: '',
+            email: '',
+            password: '',
+            password1: '',
+            otp: ''
         }
     },
 
     methods: {
+        async sendData(){
+            
+            axios.post('http://localhost/api/register/', {
+                fullname: this.fullName,
+                email: this.email,
+                password: this.password,
+                password1: this.password1
+            })
+            .then(
+                this.dialog2 = true
+            )
+        },
+
+
+        async sendOTP(){
+            
+            axios.post('http://localhost/api/register/', {
+                otp: this.otp
+            })
+            .then(
+                this.dialog2 = false,
+                this.dialog = false
+            )
+        }
     }
     
 }
