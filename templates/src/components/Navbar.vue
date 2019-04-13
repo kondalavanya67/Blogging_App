@@ -106,7 +106,7 @@ export default {
     methods: {
         async sendData(){
             
-            axios.post('http://localhost/api/register/', {
+            axios.post('http://localhost:8000/api/register/', {
                 fullname: this.fullName,
                 email: this.email,
                 password: this.password,
@@ -120,7 +120,7 @@ export default {
 
         async sendOTP(){
             
-            axios.post('http://localhost/api/register/', {
+            axios.post('http://localhost:8000/api/register/', {
                 otp: this.otp
             })
             .then(
