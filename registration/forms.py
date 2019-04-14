@@ -13,8 +13,12 @@ class profile_form(forms.ModelForm):
     class Meta:
         model = profile
         fields = (
-            'fullname', 'gender', 'age', 'phone_no', 'image'
-        )
+            'fullname','gender','age','phone_no'        )
+    
+class LoginForm(forms.Form):
+	username=forms.CharField(widget=forms.TextInput(attrs={'class': 'form-label-group'}))
+	password=forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-label-group'}))
+
 
 
 class LoginForm(forms.ModelForm):

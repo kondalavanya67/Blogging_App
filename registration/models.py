@@ -34,15 +34,18 @@ def upload_image_path(instance, filename):
 
 
 class profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    fullname = models.CharField(max_length=120)
-    age = models.IntegerField(default=25,
-                              validators=[MaxValueValidator(100), MinValueValidator(1)])
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
-    phone_no = models.CharField(max_length=11)
-    image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-    active = models.BooleanField(default=False)
-    interest = models.ManyToManyField(interest, blank=True)
+
+	user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+	fullname=models.CharField(max_length=120)
+	age=models.IntegerField( default=25,
+        validators=[MaxValueValidator(100), MinValueValidator(1)])
+	gender=models.CharField(max_length=10,choices=GENDER_CHOICES, default='male')
+	phone_no=models.CharField(max_length=11)
+	#image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+	# active=models.BooleanField(default=False)
+	interest=models.ManyToManyField(interest, blank=True)
+	post=models.ManyToManyField(Blog, blank=True)
+
 
     # post=models.ManyToManyField(Blog, blank=True)
 

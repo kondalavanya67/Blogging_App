@@ -3,7 +3,10 @@ from django.urls import path
 from django.conf.urls import url, include
 from .views import edit_profile, show_profile, login_page
 from django.contrib.auth import views as auth_views
-from .views import login_page, user_register, new_user_reg, log_out
+from .views import login_page,user_register,new_user_reg,log_out,login,sample_api
+
+app_name='registration'
+
 
 app_name = 'registration'
 
@@ -35,4 +38,8 @@ urlpatterns = [
     url(r'^password/reset/complete/$',
         auth_views.PasswordResetCompleteView.as_view(),
         name='password_reset_complete'),
+    path('api/login/', login, name="login"),
+    path('api/sampleapi', sample_api),
 ]
+
+
