@@ -6,7 +6,7 @@
     <v-layout row>
       <v-flex xs12 sm12 md12 lg8>
         <!-- {{getBlogData.articles}} -->
-        <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog"  />
+        <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog" @click="router.push({ name : 'post', params: {} })"  />
         <!-- <div v-for="blog in blogData.articles" :key="blog.title">
           {{blog.urlToImage}}
         </div> -->

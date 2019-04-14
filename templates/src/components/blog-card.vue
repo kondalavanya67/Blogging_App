@@ -1,5 +1,6 @@
 <template>
     <v-layout row class="mb-5">
+        <router-link :to="'/blog'+blog.id">
         <v-flex xs12 sm12 md12 lg12 class="mx-auto">
             <v-card flat hover>
                 <v-layout row>
@@ -60,6 +61,7 @@
                 </v-flex> -->
             </v-card>
         </v-flex>
+        </router-link>
     </v-layout>
 </template>
 
