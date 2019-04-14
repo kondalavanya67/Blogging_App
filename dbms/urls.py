@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^api/create_blog/',views.createView.as_view()),
     url(r'^api/Blog/(?P<interest_name>[a-z A-z]+)$', views.BlogView.as_view()),
+url(r'^api/Blog2/(?P<interest_name>[a-z A-z]+)$', views.BlogView2.as_view()),
     url(r'^users/', include('registration.urls')),
     path('home/',include('blog.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

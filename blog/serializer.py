@@ -39,5 +39,5 @@ class BlogSerializer(serializers.ModelSerializer):
     author = blogauthorserealizer()
     class Meta:
         model = Blog
-        fields = ('author', 'heading', 'content', 'upvotes', 'post_date', 'interests','cover_photo')
+        fields = ('id','author', 'heading', 'content', 'upvotes', 'post_date', 'interests','cover_photo')
 
