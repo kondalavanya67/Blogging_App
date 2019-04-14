@@ -22,6 +22,8 @@ from django.contrib.auth.models import User, AbstractUser
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
+from rest_framework.views import APIView
+from .serializers import userSerializer
 from django import forms
 import psycopg2
 from django.views.decorators.csrf import csrf_exempt
@@ -34,6 +36,7 @@ from rest_framework.status import (
     HTTP_200_OK
 )
 from rest_framework.response import Response
+from rest_framework import status
 
 conn=psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="kalpa@123")
 
@@ -55,6 +58,16 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},
                     status=HTTP_200_OK)
+
+
+class SignUpView(APIView):
+    def post(self, request):
+        print(request.data)
+        serializer = userSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 

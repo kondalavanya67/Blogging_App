@@ -129,7 +129,7 @@ export default {
             dialog: false,
             dialog2: false,
             dialog3: false,
-            fullName: '',
+            username: '',
             email: '',
             password: '',
             password1: '',
@@ -141,7 +141,7 @@ export default {
         async sendData(){
             
             axios.post('http://localhost:8000/api/register/', {
-                fullname: this.fullName,
+                username: this.fullName,
                 email: this.email,
                 password: this.password,
                 password1: this.password1

@@ -11,8 +11,6 @@ class userSerializer(serializers.ModelSerializer):
         username = validated_data['username']
         email = validated_data['email']
         password = validated_data['password']
-       
-        User1 = User.objects.create(username=username, email=email, password=password,
-                                        interests=interest_var)#cover_photo=cover_photo)
+        User1 = User.objects.create(username=username, email=email, password=password)#cover_photo=cover_photo)
         return User1
 
