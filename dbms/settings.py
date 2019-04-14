@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '^)4ko&0c(k=b9#ixrl9td0jvfsyxs&@(ii+1wsrgv24f6qc2ai'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -46,16 +44,13 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'dal',
     'dal_select2',
-    
-    
-
+    'corsheaders',
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -64,6 +59,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'dbms.urls'
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
@@ -84,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dbms.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -93,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'blog',
         'USER': 'postgres',
-        'PASSWORD': 'kalpa@123',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -115,7 +110,6 @@ EMAIL_HOST_USER = 'smarthealthcaresystemiiits@gmail.com'
 EMAIL_HOST_PASSWORD = 'dbmsproject@123'
 EMAIL_USE_TLS = True
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -134,7 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -147,7 +140,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -169,4 +161,12 @@ CKEDITOR_CONFIGS = {
         'toolbar': None,
     },
 }
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'iiits2021'
+EMAIL_HOST_PASSWORD = 'qwerty@123'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
 
