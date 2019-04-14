@@ -182,6 +182,14 @@ class BlogView(APIView):
             serializer = BlogSerializer(int2, many=True)
             return Response(serializer.data)
 
+class BlogbyIdView(APIView):
+    def get(self, request, blog_id):
+        int1 = Blog.objects.filter(id=blog_id)
+        if int1.exists():
+            int1 = Blog.objects.get(id=blog_id)
+            serializer = BlogSerializer(int1, many=True)
+            return Response(serializer.data)
+
 
 class BlogView2(APIView):
 
