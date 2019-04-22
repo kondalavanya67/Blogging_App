@@ -7,9 +7,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
 
 from rest_framework.views import APIView
-from .serializers import userSerializer
 import psycopg2
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
@@ -21,8 +24,135 @@ from rest_framework.status import (
     HTTP_200_OK
 )
 from rest_framework import status
-
+from registration.tokens import account_activation_token
 conn=psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="password")
+from .serializers import userSerializer
+
+class SignUpView(APIView):
+    def get(self, request):
+        int1 = User.objects.all()
+        serializer = userSerializer(int1,many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        data = request.data
+        print(data)
+        username = data['username']
+        email = data['email']
+        password = data['password']
+        password2 = data['password1']
+        username_error=''
+        email_error = ''
+        password_error = ''
+        password2_error = ''
+        error = False
+        if username=='':
+            error=True
+            username_error="Username can't be empty"
+        if error==False:
+            user_set = User.objects.filter(username=username)
+            if len(user_set)>0:
+                error=True
+                username_error="Username already exists"
+        if email == '':
+            error = True
+            email_error = "Email can't be empty"
+        if password == '':
+            error = True
+            password_error = "Password can't be empty"
+        if password != password2:
+            error = True
+            password2_error = "Passwords didn't match"
+        if error==False:
+            user = User.objects.create_user(username=username,
+                                            email=email,
+                                            )
+            user.set_password(password)
+            user.is_active = False
+            user.save()
+            mail = email
+            print(mail)
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account.'
+            message = render_to_string('registration/acc_active_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+                'token': account_activation_token.make_token(user),
+            })
+
+            send_mail(mail_subject, message, 'iiits2021@gmail.com', [mail])
+
+        errors = {'username_error':username_error,'email_error':email_error,'password_error':password_error,'password2_error':password2_error,'error':error}
+        print(errors)
+        return Response(errors)
+class SignInView(APIView):
+    def get(self, request):
+        int1 = User.objects.all()
+        serializer = userSerializer(int1,many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        data = request.data
+        print(data)
+        username = data['username']
+        password = data['password']
+        username_error=''
+        password_error = ''
+        error = False
+        if username=='':
+            error=True
+            username_error="Username can't be empty"
+        if error==False:
+            user_set = User.objects.filter(username=username)
+            if len(user_set)==0:
+                error=True
+                username_error="Username does not exist"
+        if password == '':
+            error = True
+            password_error = "Password can't be empty"
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                print(request.user)
+                return redirect('http://127.0.0.1:8080/')
+        else:
+            error = True
+            password_error = "Invalid password"
+
+        errors = {'username_error':username_error,'password_error':password_error,'error':error}
+        print(errors)
+        return Response(errors)
+
+
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        print(uid)
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('http://127.0.0.1:8080/interest')
+
+    else:
+        return HttpResponse('Activation link is invalid!')
+
+
+
+
+
+
+'''useless'''
+
+
+
 
 
 
@@ -42,16 +172,6 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},
                     status=HTTP_200_OK)
-
-
-class SignUpView(APIView):
-    def post(self, request):
-        print(request.data)
-        serializer = userSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 
