@@ -35,16 +35,20 @@
                             <v-layout wrap>
                             <v-flex xs12>
                                 <v-text-field v-model="fullName" label="Username*" required></v-text-field>
+                                <p class="error-message">Username is required</p>
                             </v-flex>
                             
                             <v-flex xs12>
                                 <v-text-field v-model="email" label="Email*" required></v-text-field>
+                                <p class="error-message">A valid email is required</p>
                             </v-flex>
                             <v-flex xs5>
                                 <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
+                                <p class="error-message">Password is required</p>
                             </v-flex>
                             <v-flex xs5 class="ml-2">
                                 <v-text-field v-model="password1" label="Confirm Password*" type="password" required></v-text-field>
+                                <p class="error-message">Passwords Don't Match</p>
                             </v-flex>
                             </v-layout>
                         </v-container>
@@ -181,6 +185,10 @@ export default {
 <style> 
     .logo{
         cursor:pointer;
+    }
+    .error-message{
+        color:red;
+        font-size:1em;
     }
 </style>
 
