@@ -8,8 +8,14 @@ from django.views.generic import RedirectView
 from rest_framework import status
 import psycopg2
 import datetime
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+from blog.serializer import BlogSerializer
+from blog.serializer import interestSerializer
 conn = psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="password")
+import readtime
 # Create your views here.
 from django.contrib.auth.models import User
 
@@ -100,13 +106,6 @@ class BlogLikeRedirect(RedirectView):
         return url
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import authentication, permissions
-from django.contrib.auth.models import User
-from blog.serializer import BlogSerializer
-from blog.serializer import interestSerializer
-
 
 class BlogLikeAPI(APIView):
     authentication_classes = (authentication.SessionAuthentication,)
@@ -192,6 +191,36 @@ class BlogbyIdView(APIView):
         return Response(serializer.data)
 
 
+class BlogbyIdView2(APIView):
+    def get(self, request, blog_id):
+        cur = conn.cursor()
+        cur.execute("SELECT author_id, heading, content, post_date, interests_id,cover_photo FROM blog_blog WHERE id ="+str(blog_id))
+        row = cur.fetchone()
+        print(row)
+        cur.execute("SELECT username FROM auth_user where id = " + str(row[0]))
+        name = cur.fetchone()
+        date = str(row[3]).split()
+        date_str = date[0]
+        date_val = date_str.split('-')
+        x = datetime.datetime(int(date_val[0]), int(date_val[1]), int(date_val[2]))
+        result = readtime.of_text(row[2])
+        minutes = result.minutes
+        val = x.strftime('%Y %b %d')
+        var = {
+            'author': name[0],
+            'heading': row[1],
+            'content': row[2],
+            'post_date': val,
+            'interests': row[4],
+            'cover_photo': row[5],
+            'readtime': minutes
+        }
+
+        return Response(var)
+
+
+
+
 class BlogView2(APIView):
 
     def get(self, request, interest_name):
@@ -200,17 +229,28 @@ class BlogView2(APIView):
         cur.execute(va)
         p = cur.fetchone()
         print(p)
-        cur.execute("SELECT author_id, heading, content, post_date, interests_id,cover_photo FROM blog_blog WHERE interests_id = '" + str(p[0]) +"' ORDER BY RANDOM();")
+        cur.execute("SELECT author_id, heading, content, post_date, interests_id,cover_photo,id FROM blog_blog WHERE interests_id = '" + str(p[0]) +"' ORDER BY RANDOM();")
         rows = cur.fetchall()
         data = []
         for i in rows:
+            cur.execute("SELECT username FROM auth_user where id = " +str(i[0]))
+            name = cur.fetchone()
+            date = str(i[3]).split()
+            date_str = date[0]
+            date_val = date_str.split('-')
+            x = datetime.datetime(int(date_val[0]),int(date_val[1]),int(date_val[2]))
+            result=readtime.of_text(i[2])
+            minutes=result.minutes
+            val = x.strftime('%Y %b %d')
             var = {
-                'author':i[0],
+                'id':i[6],
+                'author':name[0],
                 'heading':i[1],
                 'content':i[2],
-                'post_date':i[3],
+                'post_date':val,
                 'interests':i[4],
                 'cover_photo':i[5],
+                'readtime':minutes
             }
             data.append(var)
         return Response(data)

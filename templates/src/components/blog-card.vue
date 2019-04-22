@@ -1,6 +1,6 @@
 <template>
     <v-layout row class="mb-5">
-        <router-link tag="flex" :to="'/post/'+blog.id">
+        <router-link class="blog-card" tag="li" :to="'/post/'+blog.id">
         <v-flex xs12 sm12 md12 lg12 class="mx-auto">
             <v-card flat hover>
                 <v-layout row>
@@ -18,11 +18,11 @@
                                 <h3 class="display-1 font-weight-bold md-0">{{blog.heading | truncate(60) }}</h3>
 
                                 <v-layout row>
-                                    <span class="mr-2">{{blog.author.username | truncate(20)}}</span>
+                                    <span class="mr-2">{{blog.author | truncate(20)}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
                                     <span class="mx-2">{{blog.post_date}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
-                                    <span class="mx-2">7 Min Read</span>
+                                    <span class="mx-2">{{blog.readtime}} min read</span>
                                 </v-layout>
 
                                 <div class="py-4">{{blog.content | truncate(170) }}</div>
@@ -70,7 +70,7 @@ export default {
     name:'BlogCard',
     props:{
         blog:{
-            author:Object,
+            author:String,
             content:String,
             post_date:String,
             heading:String,
@@ -88,5 +88,8 @@ export default {
         transform: scale(1.1);
         fill:blueviolet;
         color:blueviolet;
+    }
+    .blog-card{
+        list-style-type: none;
     }
 </style>

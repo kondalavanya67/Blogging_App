@@ -34,21 +34,21 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field v-model="fullName" label="Username*" required></v-text-field>
-                                <p class="error-message">Username is required</p>
+                                <v-text-field v-model="username" label="Username*" required></v-text-field>
+                                <p v-if="this.error"  class="error-message">{{this.result.username_error}}</p>
                             </v-flex>
                             
                             <v-flex xs12>
                                 <v-text-field v-model="email" label="Email*" required></v-text-field>
-                                <p class="error-message">A valid email is required</p>
+                                <p v-if="this.error"  class="error-message">{{this.result.email_error}}</p>
                             </v-flex>
                             <v-flex xs5>
                                 <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
-                                <p class="error-message">Password is required</p>
+                                <p v-if="this.error"  class="error-message">{{this.result.password_error}}</p>
                             </v-flex>
                             <v-flex xs5 class="ml-2">
                                 <v-text-field v-model="password1" label="Confirm Password*" type="password" required></v-text-field>
-                                <p class="error-message">Passwords Don't Match</p>
+                                <p v-if="this.error"  class="error-message">{{this.result.password2_error}}</p>
                             </v-flex>
                             </v-layout>
                         </v-container>
@@ -57,21 +57,6 @@
                         <v-card-actions>
                         
                         <v-btn large dark color="blue darken-1 ml-3 mb-3" flat @click="sendData">Next</v-btn>
-                        <v-dialog v-model="dialog2" max-width="500px">
-                            <v-card>
-                                <v-card-title class="headline font-weight-bold">
-                                    Please Enter Your Six Digit OTP
-                                </v-card-title>
-                                <v-card-text>
-                                <v-flex xs6>
-                                    <v-text-field v-model="otp" label="Enter OTP Here*" type="text" required></v-text-field>
-                                </v-flex>
-                                </v-card-text>
-                                <v-card-actions>
-                                <v-btn color="primary" flat @click="sendOTP">Next</v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -92,7 +77,7 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field v-model="fullName" label="Username*" required></v-text-field>
+                                <v-text-field v-model="username" label="Username*" required></v-text-field>
                             </v-flex>
                         
                             <v-flex xs12>
@@ -131,42 +116,50 @@ export default {
     data(){
         return{
             dialog: false,
-            dialog2: false,
             dialog3: false,
             username: '',
             email: '',
             password: '',
             password1: '',
-            otp: ''
+            result:null,
+            error:false
         }
     },
 
     methods: {
+
+        // printFunction(data){
+        //     console.log(data)
+        // },
+        
+
         async sendData(){
             
             axios.post('http://localhost:8000/api/register/', {
-                username: this.fullName,
+                username: this.username,
                 email: this.email,
                 password: this.password,
                 password1: this.password1
             })
             .then(
-                this.dialog2 = true
+                response => {
+
+                    // this.printFunction(response)
+
+                    this.result = response.data
+                
+                    if( this.result.error == "False" ){
+                        this.dialog = false
+                    }
+                    else{
+                        this.error= true;
+                    }
+                        
+                }
             )
         },
 
-
-        async sendOTP(){
-            
-            axios.post('http://localhost:8000/api/register/', {
-                otp: this.otp
-            })
-            .then(
-                this.dialog2 = false,
-                this.dialog = false
-            )
-        },
-
+       
 
         async sendLoginData(){
             axios.post('http://localhost:8000/api/login/', {
