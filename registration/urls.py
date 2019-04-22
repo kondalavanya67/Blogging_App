@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf.urls import url, include
 from .views import edit_profile, show_profile, login_page
 from django.contrib.auth import views as auth_views
-from .views import login_page,user_register,new_user_reg,log_out,login,sample_api
+from .views import login_page,user_register,new_user_reg,log_out,login,sample_api,activate
 
 app_name='registration'
 
@@ -17,6 +17,8 @@ urlpatterns = [
     path('login/', login_page, name='login'),
     path('logout/', log_out, name='log_out'),
     path('register/', user_register, name='user_register'),
+    url(r'activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
+        activate, name='activate'),
     url(r'^new_user_reg/$', new_user_reg, name='new_user_reg'),
     url(r'^password/change/$',
         auth_views.PasswordChangeView.as_view(),
