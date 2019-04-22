@@ -1,6 +1,6 @@
 <template>
     <v-layout row class="mb-5">
-        <router-link tag="flex" :to="'/post/'+blog.id">
+        <router-link class="blog-card" tag="li" :to="'/post/'+blog.id">
         <v-flex xs12 sm12 md12 lg12 class="mx-auto">
             <v-card flat hover>
                 <v-layout row>
@@ -88,5 +88,8 @@ export default {
         transform: scale(1.1);
         fill:blueviolet;
         color:blueviolet;
+    }
+    .blog-card{
+        list-style-type: none;
     }
 </style>
