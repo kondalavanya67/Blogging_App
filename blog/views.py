@@ -181,9 +181,36 @@ class BlogView(APIView):
         if int2.exists():
             serializer = BlogSerializer(int2, many=True)
             return Response(serializer.data)
-    def post(self,request):
-        serializer = BlogSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+class BlogbyIdView(APIView):
+    def get(self, request, blog_id):
+        int1 = Blog.objects.filter(id=blog_id)
+        print(int1)
+        if int1.exists():
+            int1 = Blog.objects.get(id=blog_id)
+        serializer = BlogSerializer(int1)
+        return Response(serializer.data)
+
+
+class BlogView2(APIView):
+
+    def get(self, request, interest_name):
+        cur = conn.cursor()
+        va = "SELECT * FROM blog_interest WHERE interest_name = '" + str(interest_name)+"';"
+        cur.execute(va)
+        p = cur.fetchone()
+        print(p)
+        cur.execute("SELECT author_id, heading, content, post_date, interests_id,cover_photo FROM blog_blog WHERE interests_id = '" + str(p[0]) +"' ORDER BY RANDOM();")
+        rows = cur.fetchall()
+        data = []
+        for i in rows:
+            var = {
+                'author':i[0],
+                'heading':i[1],
+                'content':i[2],
+                'post_date':i[3],
+                'interests':i[4],
+                'cover_photo':i[5],
+            }
+            data.append(var)
+        return Response(data)

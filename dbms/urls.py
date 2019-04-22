@@ -7,12 +7,16 @@ from django.conf.urls.static import static
 from blog import views
 from .views import home
 
+from registration import views as views2
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^api/create_blog/',views.createView.as_view()),
+    url(r'^api/register/',views2),
     url(r'^api/Blog/(?P<interest_name>[a-z A-z]+)$', views.BlogView.as_view()),
+    url(r'^api/Blog_id/(?P<blog_id>[0-9]+)$', views.BlogbyIdView.as_view()),
+    url(r'^api/Blog2/(?P<interest_name>[a-z A-z]+)$', views.BlogView2.as_view()),
     url(r'^users/', include('registration.urls')),
     path('home/',include('blog.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

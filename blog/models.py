@@ -58,3 +58,12 @@ class Comment(models.Model):
 
     def children(self):
         return Comment.objects.filter(parent=self)
+
+class Deleted_Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    cover_photo = models.TextField(null=True, blank=True)
+    heading = models.CharField(max_length=200)
+    content = RichTextUploadingField()
+    post_date = models.DateTimeField(auto_now_add=True)
+    interests = models.ForeignKey(interest, blank=True, on_delete=models.CASCADE)
+    delete_date = models.DateField(auto_now_add=True)
