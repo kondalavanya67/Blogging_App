@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+
 export default {
     name:'Post',
     data(){
@@ -52,7 +52,7 @@ export default {
         }
     },
 
-    created() {
+    async created() {
         var url = 'http://localhost:8000/api/Blog/'+this.id;
         var req = new Request(url)
         this.blog = await fetch(req)

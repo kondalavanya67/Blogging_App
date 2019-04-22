@@ -37,7 +37,7 @@
 
                                     <v-icon size="25px" class="mr-4 icon">share</v-icon>
                                     <v-icon size="25px" class="mr-4 icon">bookmark_border</v-icon>
-
+                                    <v-icon size="25px" v-if="this.$route.path == '/profile'" class="mr-4 icon">delete</v-icon>
                                 </v-layout>
 
                             </div>
