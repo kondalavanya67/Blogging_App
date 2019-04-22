@@ -18,11 +18,11 @@
                                 <h3 class="display-1 font-weight-bold md-0">{{blog.heading | truncate(60) }}</h3>
 
                                 <v-layout row>
-                                    <span class="mr-2">{{blog.author.username | truncate(20)}}</span>
+                                    <span class="mr-2">{{blog.author | truncate(20)}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
                                     <span class="mx-2">{{blog.post_date}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
-                                    <span class="mx-2">7 Min Read</span>
+                                    <span class="mx-2">{{blog.readtime}} min read</span>
                                 </v-layout>
 
                                 <div class="py-4">{{blog.content | truncate(170) }}</div>
@@ -70,7 +70,7 @@ export default {
     name:'BlogCard',
     props:{
         blog:{
-            author:Object,
+            author:String,
             content:String,
             post_date:String,
             heading:String,

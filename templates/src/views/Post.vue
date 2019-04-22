@@ -22,11 +22,11 @@
                             <img src="https://cdn.vuetifyjs.com/images/lists/2.jpg">
                         </v-list-tile-avatar>
                         
-                        <span class="mr-2 pt-1">{{blog.author.username}}</span>
+                        <span class="mr-2 pt-1">{{blog.author}}</span>
                         <v-icon size="7px" class="mx-2 pb-3 pt-1">lens</v-icon>
                         <span class="mx-2 pt-1">{{blog.post_date}}</span>
                         <v-icon size="7px" class="mx-2 pb-3 pt-1">lens</v-icon>
-                        <span class="mx-2 pt-1">7 Min Read</span>
+                        <span class="mx-2 pt-1">{{blog.readtime}} min read</span>
                         <v-icon size="7px" class="mx-2 pb-3 pt-1">lens</v-icon>
                         <v-btn small outline color="indigo">Follow</v-btn>
 
@@ -41,10 +41,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-
-=======
->>>>>>> 98892ca444021f2cade1e3a105ddc3e546f455b0
 export default {
     name:'Post',
     data(){
@@ -56,11 +52,7 @@ export default {
     },
 
     async created() {
-<<<<<<< HEAD
-        var url = 'http://localhost:8000/api/Blog/'+this.id;
-=======
         var url = 'http://localhost:8000/api/Blog_id/'+this.id;
->>>>>>> 98892ca444021f2cade1e3a105ddc3e546f455b0
         var req = new Request(url)
         this.blog = await fetch(req)
                             .then(function (response) {
