@@ -33,21 +33,39 @@ def upload_image_path(instance, filename):
         new_filename=new_filename, final_filename=final_filename)
 
 
+# class profile(models.Model):
+#
+# 	user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
+# 	fullname=models.CharField(max_length=120)
+# 	age=models.IntegerField( default=25,
+#         validators=[MaxValueValidator(100), MinValueValidator(1)])
+# 	gender=models.CharField(max_length=10,choices=GENDER_CHOICES, default='male')
+# 	phone_no=models.CharField(max_length=11)
+# 	#image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+# 	# active=models.BooleanField(default=False)
+# 	interest=models.ManyToManyField(interest, blank=True)
+# 	post=models.ManyToManyField(Blog, blank=True)
+#
+#     # post=models.ManyToManyField(Blog, blank=True)
+#
+#
+#     def __str__(self):
+#         return str(self.user)
+#
+#     def get_absolute_url(self):
+#         return "/user/{id}/".format(id=self.id)
+#
+#     def get_absolute_url_profile(self):
+#         return reverse('registration:show_profile', kwargs={'pk': self.pk})
 class profile(models.Model):
 
-	user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True)
-	fullname=models.CharField(max_length=120)
-	age=models.IntegerField( default=25,
-        validators=[MaxValueValidator(100), MinValueValidator(1)])
-	gender=models.CharField(max_length=10,choices=GENDER_CHOICES, default='male')
-	phone_no=models.CharField(max_length=11)
-	#image=models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-	# active=models.BooleanField(default=False)
-	interest=models.ManyToManyField(interest, blank=True)
-	post=models.ManyToManyField(Blog, blank=True)
-
-
-    # post=models.ManyToManyField(Blog, blank=True)
+    user = models.ForeignKey(User, on_delete = models.CASCADE, null=True, blank=True)
+    fullname = models.CharField(max_length=120)
+    age=models.IntegerField(default=25, validators=[MaxValueValidator(100), MinValueValidator(1)])
+    gender=models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
+    phone_no = models.CharField(max_length=11)
+    interest=models.ManyToManyField(interest, blank=True)
+    post=models.ManyToManyField(Blog, blank=True)
 
     def __str__(self):
         return str(self.user)
@@ -56,15 +74,15 @@ class profile(models.Model):
         return "/user/{id}/".format(id=self.id)
 
     def get_absolute_url_profile(self):
-        return reverse('registration:show_profile', kwargs={'pk': self.pk})
+        return  reverse('registration:show_profile', kwargs={'pk':self.pk})
 
 
 class Follower(models.Model):
     follower = models.ForeignKey(profile, related_name='following', on_delete=models.CASCADE)
     following = models.ForeignKey(profile, related_name='followers', on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('follower', 'following')
+class Meta:
+    unique_together = ('follower', 'following')
 
-    def __unicode__(self):
-        return u'%s follows %s' % (self.follower, self.following)
+def __unicode__(self):
+    return u'%s follows %s' % (self.follower, self.following)
