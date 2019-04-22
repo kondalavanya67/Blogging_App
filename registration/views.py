@@ -3,28 +3,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import profile_form, LoginForm, RegisterForm
-from .models import profile, Follower
-from dal import autocomplete
-from django.views.generic import RedirectView
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, get_user_model, logout
-from django.contrib.auth.decorators import login_required
-from django.utils.encoding import force_bytes, force_text
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from django.db import connection, IntegrityError
-from django.contrib.auth.models import User, AbstractUser
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
 from rest_framework.views import APIView
 from .serializers import userSerializer
-from django import forms
 import psycopg2
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
@@ -35,10 +20,9 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
-from rest_framework.response import Response
 from rest_framework import status
 
-conn=psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="kalpa@123")
+conn=psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="password")
 
 
 
