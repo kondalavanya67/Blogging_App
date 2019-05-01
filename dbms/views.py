@@ -7,3 +7,6 @@ def home(request):
         "data": "this is home page"
     }
     return render(request, 'registration/home.html', context=context)
+
+
+

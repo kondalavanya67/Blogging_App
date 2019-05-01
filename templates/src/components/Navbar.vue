@@ -65,37 +65,37 @@
 
                 <v-dialog v-model="dialog3" persistent max-width="600px">
                     <template v-slot:activator="{ on }">
-                        <v-btn outline color="primary" flat v-on="on">Log In</v-btn>
+                        <v-btn outline color="primary" flat v-if="!userLoaded" v-on="on">Log In</v-btn>
+                        <v-btn outline color="primary" flat v-else @click="logout">Log Out</v-btn>
                     </template>
                     <v-card>
-                        <v-card-title>
-                        <span class="display-1 font-weight-bold pl-3">Log In</span>
-                        <v-spacer></v-spacer>
-                        <v-btn fab color="blue darken-1" flat @click="dialog3 = false"><v-icon>cancel</v-icon></v-btn>
-                        </v-card-title>
-                        <v-card-text>
-                        <v-container grid-list-md>
-                            <v-layout wrap>
-                            <v-flex xs12>
-                                <v-text-field v-model="username" label="Username*" required></v-text-field>
-                            </v-flex>
-                        
-                            <v-flex xs12>
-                                <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
-                            </v-flex>
-    
-                            </v-layout>
-                        </v-container>
-                        <small class="pl-3">*indicates required field</small>
-                        </v-card-text>
-                        <v-card-actions>
-                        
-                        <v-btn large dark color="blue darken-1 ml-3 mb-3" flat @click="sendLoginData">Login</v-btn>
-                        </v-card-actions>
+                       
+                            <v-card-title>
+                            <span class="display-1 font-weight-bold pl-3">Log In</span>
+                            <v-spacer></v-spacer>
+                            <v-btn fab color="blue darken-1" flat @click="dialog3 = false"><v-icon>cancel</v-icon></v-btn>
+                            </v-card-title>
+                            <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
+                                <v-flex xs12>
+                                    <v-text-field v-model="username" label="Username*" required></v-text-field>
+                                </v-flex>
+                            
+                                <v-flex xs12>
+                                    <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
+                                </v-flex>
+                                <p v-if="this.error"  class="error-message">{{this.result.non_field_errors}}</p>
+                                </v-layout>
+                            </v-container>
+                            <small class="pl-3">*indicates required field</small>
+                            </v-card-text>
+                            <v-card-actions>
+                            
+                            <v-btn large dark color="blue darken-1 ml-3 mb-3" flat @click="authenticate">Login</v-btn>
+                            </v-card-actions>
                     </v-card>
                 </v-dialog>
-
-
                 
             </v-toolbar>
         </nav>
@@ -105,6 +105,8 @@
 <script>
 import Blog from './Blog'
 import axios from 'axios'
+
+
 
 export default {
     name:'Navbar',
@@ -122,7 +124,8 @@ export default {
             password: '',
             password1: '',
             result:null,
-            error:false
+            error:false,
+            userLoaded:false
         }
     },
 
@@ -152,30 +155,43 @@ export default {
                         this.dialog = false
                     }
                     else{
-                        this.error= true;
+                        this.error = true;
                     }
                         
                 }
             )
         },
-
        
-
-        async sendLoginData(){
-            axios.post('http://localhost:8000/api/login/', {
+        authenticate () {
+            const payload = {
                 username: this.username,
                 password: this.password
-            })
-            .then(
-                this.dialog3 = false
-            )
-        }
+            }
+            axios.post(this.$store.state.endpoints.obtainJWT, payload)
+                .then((response) => {
+                        this.result = response
+                        this.$store.commit('updateToken', response.data.token)
+                        this.userLoaded = true
+                        this.dialog3 = false
+                })
+                .catch(e =>{
+                    if(e){
+                        this.result = {non_field_errors:"Login Credentials Not Valid"};
+                        this.error=true
+                    }
+                })
+            },
+
+            logout(){
+                this.$store.commit('removeToken')
+                this.userLoaded = false
+            }
     }
     
 }
 </script>
 
-<style> 
+<style lang="css">
     .logo{
         cursor:pointer;
     }
@@ -184,4 +200,3 @@ export default {
         font-size:1em;
     }
 </style>
-
