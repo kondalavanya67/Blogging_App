@@ -169,6 +169,20 @@ class createView(APIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class interestView(APIView):
+
+    def get(self, request):
+        qs = interest.objects.all()
+        data = []
+        for i in qs:
+            var = {'interest_name':i.interest_name,'id':i.id}
+            data.append(var)
+        return Response(data)
+
+
+
+
 class BlogView(APIView):
 
     def get(self,request,interest_name):

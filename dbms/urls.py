@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from blog import views
 from .views import home
@@ -18,6 +19,18 @@ urlpatterns = [
     url(r'^api/Blog/(?P<interest_name>[a-z A-z]+)$', views.BlogView2.as_view()),
     url(r'^api/Blog_id/(?P<blog_id>[0-9]+)$', views.BlogbyIdView2.as_view()),
     path('users/', include('registration.urls')),
+
+    # jwt - start
+
+    # url(r'^api/v1/auth/obtain_token/', obtain_jwt_token),
+    # url(r'^api/v1/auth/refresh_token/', refresh_jwt_token),
+    # The rest of the endpoints
+    #url(r'^api/v1/', include('project.api', namespace='apiv1')),
+    path('auth/obtain_token/', obtain_jwt_token),
+    path('auth/refresh_token/', refresh_jwt_token),
+
+    # jwt - end
+
     path('home/',include('blog.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -114,7 +114,6 @@ class SignInView(APIView):
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
-                login(request, user)
                 print(request.user)
                 return redirect('http://127.0.0.1:8080/')
         else:

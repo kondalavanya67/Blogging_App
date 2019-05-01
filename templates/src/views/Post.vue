@@ -32,17 +32,28 @@
 
                     </v-layout>
 
+
+                    <!-- Icons for bookmark, share and like  -->
+
                     <v-layout row class="pt-5">
                         <v-flex lg1>
-                            <v-icon large class="icon py-2">bookmark_border</v-icon><br/>
-                            <v-icon large class="icon py-2">favorite_border</v-icon><br/>
-                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                            <!-- Bookmark icon -->
+                            <v-icon large class="icon py-2">bookmark_border</v-icon><br/> 
+
+                            <!-- Like icons -->
+                            <v-icon large class="icon py-2" @click="favorite()">favorite_border</v-icon><br/>
+
+                            <!-- Icons for facebook - start -->
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"  
                                 width="35" height="35"
                                 viewBox="0 0 24 24"
                                 class="my-2 icon"
                             >    
                                 <path d="M17.525,9H14V7c0-1.032,0.084-1.682,1.563-1.682h1.868v-3.18C16.522,2.044,15.608,1.998,14.693,2 C11.98,2,10,3.657,10,6.699V9H7v4l3-0.001V22h4v-9.003l3.066-0.001L17.525,9z"></path>
                             </svg>
+
+                            <!-- Icons for facebook - end -->
+
                         </v-flex>
 
                         <v-flex lg11>
@@ -76,6 +87,12 @@ export default {
                                 return response.json();
                             })
     },
+
+    methods:{
+        favorite(){
+            
+        }
+    }
 }
 </script>
 
