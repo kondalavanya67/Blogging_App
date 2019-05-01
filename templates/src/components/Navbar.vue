@@ -5,7 +5,7 @@
                 <v-toolbar-title>
                 <span class="font-weight-bold text-uppercase">
                     <router-link class="logo" tag="span" to="/">
-                        OASP
+                        BlogIn'
                     </router-link>
                 </span>
                 </v-toolbar-title>
@@ -34,7 +34,7 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field v-model="username" label="Username*" required></v-text-field>
+                                <v-text-field v-model="this.username" label="Username*" required></v-text-field>
                                 <p v-if="this.error"  class="error-message">{{this.result.username_error}}</p>
                             </v-flex>
                             
@@ -79,7 +79,7 @@
                             <v-container grid-list-md>
                                 <v-layout wrap>
                                 <v-flex xs12>
-                                    <v-text-field v-model="username" label="Username*" required></v-text-field>
+                                    <v-text-field v-model="this.username" label="Username*" required></v-text-field>
                                 </v-flex>
                             
                                 <v-flex xs12>
@@ -119,7 +119,6 @@ export default {
         return{
             dialog: false,
             dialog3: false,
-            username: '',
             email: '',
             password: '',
             password1: '',

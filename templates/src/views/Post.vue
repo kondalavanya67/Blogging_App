@@ -1,6 +1,5 @@
 <template>
     <v-container class="mt-5">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
         <v-layout row class="mt-5">
             <v-flex xs12 sm12 md12 lg12>
                 <v-img :src="blog.cover_photo"></v-img>
@@ -29,7 +28,8 @@
                         <v-icon size="7px" class="mx-2 pb-3 pt-1">lens</v-icon>
                         <span class="mx-2 pt-1">{{blog.readtime}} min read</span>
                         <v-icon size="7px" class="mx-2 pb-3 pt-1">lens</v-icon>
-                        <v-btn small outline color="indigo">Follow</v-btn>
+                        <v-btn small v-if="!isFollow" outline color="indigo" @click="follow">Follow</v-btn>
+                        <v-btn small v-else color="indigo white--text" @click="unfollow">Following</v-btn>
 
                     </v-layout>
 
@@ -37,12 +37,18 @@
                     <!-- Icons for bookmark, share and like  -->
 
                     <v-layout row class="pt-5">
-                        <v-flex lg1>
+                        <v-flex lg1 class="fix">
                             <!-- Bookmark icon -->
                             <v-icon large class="icon py-2">bookmark_border</v-icon><br/> 
 
                             <!-- Like icons -->
-                            <v-icon large class="icon py-2" @click="favorite()">favorite_border</v-icon><br/>
+                            <v-icon large v-if="!liked" class="icon py-2" @click="like">favorite_border</v-icon>
+                            <v-icon large v-else class="icon py-2" @click="unlike">favorite</v-icon>
+                            <v-flex>
+                                <span class="pl-2 subheading blue--text">{{blog.total_upvote}}</span>
+                            </v-flex>
+                            <br/>
+                            <!-- <v-icon large v-if="liked" class="icon" @click="unlike">favorite</v-icon><br/> -->
 
                             <!-- Icons for facebook - start -->
                             <social-sharing url="'http://127.0.0.1:8080/post/'+"
@@ -54,7 +60,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"  
                                                 width="35" height="35"
                                                 viewBox="0 0 24 24"
-                                                class="my-2 icon"
+                                                class="icon"
                                             >  
                                                 <path d="M17.525,9H14V7c0-1.032,0.084-1.682,1.563-1.682h1.868v-3.18C16.522,2.044,15.608,1.998,14.693,2 C11.98,2,10,3.657,10,6.699V9H7v4l3-0.001V22h4v-9.003l3.066-0.001L17.525,9z"></path>
                                             </svg>
@@ -96,14 +102,18 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
     name:'Post',
     data(){
         return{
+            likecount:null,
+            liked:false,
             id: this.$route.params.id,
             interest_name: this.$route.params.interest_name,
-            blog: {}
+            blog: {},
+            isFollow:null
         }
     },
 
@@ -114,16 +124,60 @@ export default {
                             .then(function (response) {
                                 return response.json();
                             })
+        this.isFollow = this.blog.is_follow
+
     },
 
     methods:{
-        favorite(){
-            
+        async like(){
+            var url = 'http://localhost:8000/api/likebutton/';
+            axios.patch(url,{
+                id:this.id,
+                username:'vineet29'
+            }).then((response)=>{
+                this.liked = true;
+                this.likecount = response.data.total_upvote  
+            }          
+            )  
+        },
+
+        async unlike(){
+            var url = 'http://localhost:8000/api/likebutton/';
+            axios.patch(url,{
+                id:this.id,
+                username:'vineet29'
+            }).then( (response)=>{
+                this.liked = false
+                this.likecount = response.data.total_upvote  
+            }
+            ) 
+        },
+
+
+        async follow(){
+            var url = 'http://localhost:8000/api/followview/'
+            axios.post(url, {
+                id: this.blog.author,
+                username:'laxman'
+            }).then(
+                this.isFollow = true
+            )
+        },
+
+
+        async unfollow(){
+            var url = 'http://localhost:8000/api/followview/'
+            axios.post(url, {
+                id: this.blog.author,
+                isername:'laxman'
+            }).then(
+                this.isFollow = false
+            )
         }
     }
 }
-</script>
 
+</script>
 
 <style lang="css">
     .post-content{
@@ -140,7 +194,7 @@ export default {
     }
     .icon:hover{
         transform:scale(1.1);
-        color:blueviolet;
-        fill:blueviolet;
+        color:blue;
+        fill:blue;
     }
 </style>

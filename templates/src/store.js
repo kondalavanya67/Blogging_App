@@ -32,7 +32,7 @@ export const store = new Vuex.Store({
 
     blogData: null,
 
-    feed: 'Technology',
+    feed: 'yourfeed',
 
     profile:[
       {title:'Profile'},

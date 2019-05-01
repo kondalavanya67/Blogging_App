@@ -58,6 +58,7 @@
       ])
     },
 
+    
   async mounted(){
     var prop = this.$store.state.feed
     // var url = 'https://newsapi.org/v2/everything?' +
