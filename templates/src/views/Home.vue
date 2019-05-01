@@ -48,7 +48,7 @@
     },
    
    data: ()=>({
-      loaded: null
+      loaded: false
     }),
 
     computed:{
@@ -78,26 +78,28 @@
                                   .then(function (response) {
                                     return response.json();
                                   })
+    this.loaded = true
+                
                                 
 
   },
 
     methods: {
-      infiniteHandler($state) {
-      axios.get(api, {
-        params: {
-          page: this.page,
-        },
-      }).then(({ data }) => {
-        if (data.hits.length) {
-          this.page += 1;
-          this.list.push(...data.hits);
-          $state.loaded();
-        } else {
-          $state.complete();
-        }
-      });
-    }
+    //   infiniteHandler($state) {
+    //   axios.get(api, {
+    //     params: {
+    //       page: this.page,
+    //     },
+    //   }).then(({ data }) => {
+    //     if (data.hits.length) {
+    //       this.page += 1;
+    //       this.list.push(...data.hits);
+    //       $state.loaded();
+    //     } else {
+    //       $state.complete();
+    //     }
+    //   });
+    // }
   },
 
     

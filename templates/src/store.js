@@ -44,11 +44,7 @@ export const store = new Vuex.Store({
       {title:'Following'},
    ],
 
-   topics: [
-    { title: 'Technology'},
-    { title: 'Fashion'},
-    { title: 'Fitness'}
-  ],
+    topics: null,
     tab:null
   },
 

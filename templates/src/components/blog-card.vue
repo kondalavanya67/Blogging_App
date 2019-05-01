@@ -5,12 +5,12 @@
                 <v-layout row>
                     <v-flex xs12 sm12 lg4 md3>
                         <skeleton-box
-                            v-if="loaded"
+                            v-if="!loaded"
                             width="250px"
                             height="100%"
                         />
                         <v-img
-                            v-if="!loaded"
+                            v-if="loaded"
                             :src="blog.urlToImage"
                             height="100%"
                         ></v-img>
@@ -30,7 +30,7 @@
                                 <v-layout row>
                                     <span class="mr-2">{{blog.author | truncate(20)}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
-                                    <span class="mx-2">{{blog.publishedAt}}</span>
+                                    <span class="mx-2">{{blog.post_date}}</span>
                                     <v-icon size="7px" class="mx-2">lens</v-icon>
                                     <span class="mx-2">7 Min Read</span>
                                 </v-layout>
