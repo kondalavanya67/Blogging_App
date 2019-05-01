@@ -6,7 +6,8 @@
     <v-layout row>
       <v-flex xs12 sm12 md12 lg8>
         <!-- {{getBlogData.articles}} -->
-        <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog" />
+        <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog" v-bind:loaded="loaded" />
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
         <!-- <div v-for="blog in blogData.articles" :key="blog.title">
           {{blog.urlToImage}}
         </div> -->
@@ -32,6 +33,7 @@
   import FeaturedBlogCard from '../components/featured-blog-card'
   import BlogCard from '../components/blog-card'
   import SubNav from '../components/SubNav'
+  import InfiniteLoading from 'vue-infinite-loading';
   import {mapGetters} from 'vuex'
   // import axios from 'axios'
 
@@ -41,11 +43,12 @@
     components: {
      BlogCard,
      FeaturedBlogCard, 
-     SubNav
+     SubNav,
+     InfiniteLoading,
     },
    
    data: ()=>({
-      
+      loaded: null
     }),
 
     computed:{
@@ -80,10 +83,22 @@
   },
 
     methods: {
-      // ...mapActions([
-      //   'getTopicArticle'
-      // ])
-    },
+      infiniteHandler($state) {
+      axios.get(api, {
+        params: {
+          page: this.page,
+        },
+      }).then(({ data }) => {
+        if (data.hits.length) {
+          this.page += 1;
+          this.list.push(...data.hits);
+          $state.loaded();
+        } else {
+          $state.complete();
+        }
+      });
+    }
+  },
 
     
   }
