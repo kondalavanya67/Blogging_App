@@ -18,7 +18,8 @@ conn = psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", pass
 import readtime
 # Create your views here.
 from django.contrib.auth.models import User
-
+from registration.models import *
+from registration.models import profile
 
 def blog_display(request):
     user = request.user
@@ -174,13 +175,30 @@ class interestView(APIView):
 
     def get(self, request):
         qs = interest.objects.all()
+        profiles = profile.objects.all()
         data = []
         for i in qs:
-            var = {'interest_name':i.interest_name,'id':i.id}
+            val = 0
+            for j in profiles:
+                if i in j.interest:
+                   val = val+1
+            var = {'interest_name':i.interest_name,'id':i.id,'followers':val}
             data.append(var)
         return Response(data)
 
-
+    def post(self,request):
+        username = request.data['username']
+        interest_id  = request.data['id']
+        user = User.objects.get(username=username)
+        profile1 = profile.objects.get(user=user)
+        interest_val = interest.objects.get(id=interest_id)
+        flag = False
+        if interest_val in profile1.interest:
+            profile1.interest.remove(interest_val)
+        else:
+            flag=True
+            profile1.interest.add(interest_val)
+        return Response({'flag':flag})
 
 
 class BlogView(APIView):
@@ -268,3 +286,86 @@ class BlogView2(APIView):
             }
             data.append(var)
         return Response(data)
+
+
+
+class likebutton(APIView):
+
+    def post(self, request):
+        print(request.data)
+        blog_id=request.data['blog_id']
+        username=request.data['username']
+        obj=Blog.objects.get(id=blog_id)
+        user=User.objects.get(username=username)
+        flag=False
+        if user in obj.upvotes.all():
+            obj.upvotes.remove(user)
+        else:
+            flag=True
+            obj.upvotes.add(user)
+        obj.save()
+        return Response({'upvote':flag})
+
+class Bookmark(APIView):
+
+    def post(self,request):
+        print(request.data)
+        blog_id = request.data['blog_id']
+        username = request.data['username']
+        blog = Blog.objects.get(id=blog_id)
+        user = User.objects.get(username=username)
+        bookmark=Bookmark.objects.get(user_id=user)
+        flag = False
+        if user in bookmark.bookmark.all():
+            bookmark.bookmark.remove(user)
+        else:
+            flag = True
+            bookmark.bookmark.add(user)
+        bookmark.save()
+        return Response({'bookmark': flag})
+
+class followview(APIView):
+    def post(self,request):
+        username = request.data['username']
+        following_id=request.data['following_id']
+        user=User.objects.get(username=username)
+        following=Follower.objects.get(following_id=following_id)
+        flag = False
+        if user in Follower.following.all():
+            Follower.following.remove(user)
+        else:
+            flag = True
+            Follower.following.add(user)
+        following.save()
+        return Response({'following_id': flag})
+
+
+class followers(APIView):
+    def get(self, request,user_id):
+        user=User.objects.get(user_id=user_id)
+        follower=Follower.objects.get(follower=user)
+        data = []
+        for i in follower.following:
+            f = User.objects.get(id=i)
+            var = {
+                'follower_username': f.username
+            }
+            data.append(var)
+        return Response(data)
+
+
+class following(APIView):
+    def get(self, request,user_id):
+        user=User.objects.get(user_id=user_id)
+        qs = Follower.objects.all()
+        data = []
+        for i in qs:
+            if i !=user:
+                if user in i.following:
+                    f = User.objects.get(id = i)
+                    var = {
+                        'following_username': f.username
+                    }
+                    data.append(var)
+        return Response(data)
+

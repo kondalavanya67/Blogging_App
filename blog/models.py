@@ -67,3 +67,4 @@ class Deleted_Post(models.Model):
     post_date = models.DateTimeField(auto_now_add=True)
     interests = models.ForeignKey(interest, blank=True, on_delete=models.CASCADE)
     delete_date = models.DateField(auto_now_add=True)
+

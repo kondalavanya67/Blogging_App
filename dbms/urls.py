@@ -18,6 +18,12 @@ urlpatterns = [
     url(r'^api/signin/', views2.SignInView.as_view()),
     url(r'^api/Blog/(?P<interest_name>[a-z A-z]+)$', views.BlogView2.as_view()),
     url(r'^api/Blog_id/(?P<blog_id>[0-9]+)$', views.BlogbyIdView2.as_view()),
+    url(r'^api/interests/', views.interestView.as_view()),
+    url(r'^api/likebutton/', views.likebutton.as_view()),
+    url(r'^api/Bookmark/', views.Bookmark.as_view()),
+    url(r'^api/followview/', views.followview.as_view()),
+    url(r'^api/followers/(?P<user_id>[a-z A-z]+)$', views.followers.as_view()),
+    url(r'^api/following/(?P<user_id>[a-z A-z]+)$', views.following.as_view()),
     path('users/', include('registration.urls')),
 
     # jwt - start

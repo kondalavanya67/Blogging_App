@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import profile
+#from .models import profile
 from dal import autocomplete
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -11,7 +11,7 @@ User = get_user_model()
 
 class profile_form(forms.ModelForm):
     class Meta:
-        model = profile
+        #model = profile
         fields = (
             'fullname','gender','age','phone_no'        )
     

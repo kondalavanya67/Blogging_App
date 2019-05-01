@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import profile, Follower
+from .models import  Follower
 from django.contrib.auth.models import User
 
 class userSerializer(serializers.ModelSerializer):
