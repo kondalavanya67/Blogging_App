@@ -45,13 +45,14 @@
                             <v-icon large v-if="!liked" class="icon py-2" @click="like">favorite_border</v-icon>
                             <v-icon large v-else class="icon py-2" @click="unlike">favorite</v-icon>
                             <v-flex>
-                                <span class="pl-2 subheading blue--text">{{blog.total_upvote}}</span>
+                                <span class="pl-2 subheading blue--text">{{upvotes}}</span>
                             </v-flex>
                             <br/>
                             <!-- <v-icon large v-if="liked" class="icon" @click="unlike">favorite</v-icon><br/> -->
 
                             <!-- Icons for facebook - start -->
-                            <social-sharing url="'http://127.0.0.1:8080/post/'+"
+                            <social-sharing url="http://127.0.0.1:8080/post/340" 
+
                                 title="blog.heading"
                                 description="blog.content || truncate(50)"
                                 inline-template>
@@ -108,12 +109,12 @@ export default {
     name:'Post',
     data(){
         return{
-            likecount:null,
             liked:false,
             id: this.$route.params.id,
             interest_name: this.$route.params.interest_name,
             blog: {},
-            isFollow:null
+            isFollow:null,
+            upvotes:null
         }
     },
 
@@ -124,6 +125,7 @@ export default {
                             .then(function (response) {
                                 return response.json();
                             })
+        this.upvotes = this.blog.total_upvote
         this.isFollow = this.blog.is_follow
 
     },
@@ -136,7 +138,7 @@ export default {
                 username:'vineet29'
             }).then((response)=>{
                 this.liked = true;
-                this.likecount = response.data.total_upvote  
+                this.upvotes = response.data.total_upvote  
             }          
             )  
         },
@@ -148,7 +150,7 @@ export default {
                 username:'vineet29'
             }).then( (response)=>{
                 this.liked = false
-                this.likecount = response.data.total_upvote  
+                this.upvotes = response.data.total_upvote  
             }
             ) 
         },
@@ -169,7 +171,7 @@ export default {
             var url = 'http://localhost:8000/api/followview/'
             axios.post(url, {
                 id: this.blog.author,
-                isername:'laxman'
+                username:'laxman'
             }).then(
                 this.isFollow = false
             )

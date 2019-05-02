@@ -76,12 +76,12 @@
 </template>
 
 <script>
-import SkeletonBox from './SkeletonBox.vue';
+// import SkeletonBox from './SkeletonBox.vue';
 
 export default {
     name:'BlogCard',
     components:{
-        'skeleton-box':SkeletonBox
+        // 'skeleton-box':SkeletonBox
     },
     props:{
         blog:{

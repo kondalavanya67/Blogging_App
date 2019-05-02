@@ -32,6 +32,8 @@ export const store = new Vuex.Store({
 
     blogData: null,
 
+    featuredData:null,
+
     feed: 'yourfeed',
 
     profile:[
@@ -50,22 +52,29 @@ export const store = new Vuex.Store({
 
 
   getters:{
+
+    getProfile: state => state.profile,
+
     getInterest: state => state.interests,
+
+    getTags: state => state.tags,
 
     getTags: state => state.tags,
 
     getBlogData: state => state.blogData,
 
-    getTopics: state => state.topics
+    getTopics: state => state.topics,
+
+    getFeaturedData: state => state.featuredData
   },
 
 
   mutations: {
+    updateFeaturedData(state, prop){
+      state.featuredData = prop;
+    },
     updateBlogData(state,prop){
       state.blogData = prop;
-    },
-    updateTab(state, value){
-      state.tab = value
     },
     setAuthUser(state, {
       authUser,
@@ -90,17 +99,18 @@ export const store = new Vuex.Store({
   
     async queryTopic({commit}, prop ){
 
-      // var url = 'https://newsapi.org/v2/everything?' +
-      //     'q=' + prop + '&'+
-      //     'from=2019-04-04&' +
-      //     'sortBy=popularity&' +
-      //     'apiKey=ed7767f07ae745dd9a229ca0b63d3a92';
+      var urlfeatured = 'https://newsapi.org/v2/everything?' +
+          'q=' + prop + '&'+
+          'from=2019-04-01&' +
+          'sortBy=popularity&' +
+          'apiKey=ed7767f07ae745dd9a229ca0b63d3a92';
 
-      // var req = new Request(url);
-      // var dataBlog = await fetch(req)
-      //                     .then(function(response) {
-      //                     return response.json();
-      //                 })
+      var reqfeatured = new Request(urlfeatured);
+      var data = await fetch(reqfeatured)
+                          .then(function(response) {
+                          return response.json();
+                      })
+      commit('updateFeaturedData', data)
                       
 
       var url = 'http://localhost:8000/api/Blog/'+prop;

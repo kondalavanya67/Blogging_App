@@ -2,7 +2,7 @@
   <v-container>
       <v-layout row class="mt-5 pt-5">
           <v-flex md2 lg2>
-               <SideMenu v-bind:items="profile"/>
+               <SideMenu v-bind:items="getProfile"/>
           </v-flex>
           <v-flex md10 lg10 class="px-3">  
           
@@ -83,7 +83,7 @@
 
 <script>
 import SideMenu from '../components/side-menu'
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 export default {
     name:'Profile',
@@ -100,15 +100,26 @@ export default {
         ]
     }),
 
-     mounted() {
-      this.$store.state.tab = 'profile'
+    async created() {
+      this.$store.state.tab = 'Profile'
+
+      var url = 'http://localhost:8000/api/profileposts/';
+      var req = new Request(url)
+      this.$store.state.blogData = await fetch(req)
+                                    .then(function (response) {
+                                      return response.json();
+                                    })
+
     },
 
     computed: {
-      ...mapState([
-        'profile'
+      ...mapGetters([
+        'getBlogData',
+        'getProfile'
       ])
+
     },
+
     
 }
 </script>

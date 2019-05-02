@@ -4,7 +4,7 @@
             <v-container align-content-center>
                 <v-layout row class="ml-5">
                     <v-flex>
-                        <v-btn flat>Your Feed</v-btn>
+                        <v-btn flat @click="queryTopic('yourfeed')">Your Feed</v-btn>
                     </v-flex>
                     <v-flex v-for="interest in getInterest" :key="interest.name">
                         <router-link to="/">
