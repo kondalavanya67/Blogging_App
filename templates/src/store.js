@@ -59,7 +59,7 @@ export const store = new Vuex.Store({
 
     getTags: state => state.tags,
 
-    getTags: state => state.tags,
+    getTab: state => state.tab,
 
     getBlogData: state => state.blogData,
 
@@ -70,6 +70,9 @@ export const store = new Vuex.Store({
 
 
   mutations: {
+    updateTab(state, prop){
+      state.tab = prop
+    },
     updateFeaturedData(state, prop){
       state.featuredData = prop;
     },

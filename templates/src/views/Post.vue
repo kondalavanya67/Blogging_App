@@ -85,7 +85,7 @@
                                         </network>
                                     </div>
                                     </social-sharing>  
-
+                                
                             <!-- Icons for facebook - end -->
 
                         </v-flex>

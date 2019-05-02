@@ -55,7 +55,7 @@
                                     <!-- <v-icon size="25px" class="mr-4 icon">share</v-icon>
                                     <v-icon size="25px" class="mr-4 icon">bookmark_border</v-icon>
                                     <v-icon v-if="this.$route.path == '/profile'" size="25px" class="mr-4 icon">delete</v-icon> -->
-
+                                    <v-icon v-if="this.$route.path == '/profile'" size="35px" class="icon py-2">delete</v-icon><br/>
                                 </v-layout>
 
                             </div>
