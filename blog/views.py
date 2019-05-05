@@ -18,7 +18,9 @@ conn = psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", pass
 import readtime
 # Create your views here.
 from django.contrib.auth.models import User
-
+from registration.models import *
+from registration.models import profile
+from random import shuffle
 
 def blog_display(request):
     user = request.user
@@ -168,17 +170,42 @@ class createView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
+class profilepostView(APIView):
+    def get(self,request,user_id):
+        data = []
+        blogs = Blog.objects.filter(author=user_id)
 
+        return Response(data)
 
 class interestView(APIView):
 
     def get(self, request):
         qs = interest.objects.all()
+        profiles = profile.objects.all()
         data = []
         for i in qs:
-            var = {'interest_name':i.interest_name,'id':i.id}
+            val = 0
+            prof = profile.objects.filter(interest=i)
+            val = len(prof)
+            var = {'interest_name':i.interest_name,'id':i.id,'followers':val}
             data.append(var)
         return Response(data)
+
+    def post(self,request):
+        username = request.data['username']
+        interest_id  = request.data['id']
+        user = User.objects.get(username=username)
+        profile1 = profile.objects.get(user=user)
+        interest_val = interest.objects.get(id=interest_id)
+        flag = False
+        print(profile1.interest.all())
+        if interest_val in profile1.interest.all():
+            profile1.interest.remove(interest_val)
+        else:
+            flag=True
+            profile1.interest.add(interest_val)
+        profile1.save()
+        return Response({'flag':flag})
 
 
 
@@ -207,6 +234,7 @@ class BlogbyIdView(APIView):
 
 class BlogbyIdView2(APIView):
     def get(self, request, blog_id):
+        blog = Blog.objects.get(id=blog_id)
         cur = conn.cursor()
         cur.execute("SELECT author_id, heading, content, post_date, interests_id,cover_photo FROM blog_blog WHERE id ="+str(blog_id))
         row = cur.fetchone()
@@ -220,14 +248,71 @@ class BlogbyIdView2(APIView):
         result = readtime.of_text(row[2])
         minutes = result.minutes
         val = x.strftime('%Y %b %d')
+        author_obj = User.objects.get(username=name[0])
+
+        if author_obj in blog.upvotes.all():
+            upvote = True
+        else:
+            upvote = False
+        link = str(row[5])
+        new_one = False
+        p = link.find('/fit/t')
+        if p != -1:
+            new_one = True
+            f = link.split('/')
+            for index, kl in enumerate(f):
+                if kl == 't':
+                    f[index + 1] = 1110
+                    f[index + 2] = 732
+            cov = f[0]
+
+            for po in f[1:]:
+                cov = cov + '/' + str(po)
+        link = str(row[5])
+        p = link.find('/freeze/focal')
+        if p != -1:
+            new_one = True
+            f = link.split('/')
+            for index, kl in enumerate(f):
+                if kl == 'focal':
+                    f[index + 1] = 1110
+                    f[index + 2] = 732
+            cov = f[0]
+            for po in f[1:]:
+                cov = cov + '/' + str(po)
+        link = str(row[5])
+        p = link.find('/freeze/max')
+        if p != -1:
+            new_one = True
+            f = link.split('/')
+            for index, kl in enumerate(f):
+                if kl == 'max':
+                    f[index + 1] = 1050
+            cov = f[0]
+            for po in f[1:]:
+                cov = cov + '/' + str(po)
+        if new_one == False:
+            cov = row[5]
+
+        total_upvotes = len(blog.upvotes.all())
+        booah = User.objects.get(username=name[0])
+        follow = Follower.objects.get(follower=booah)
+        user = User.objects.get(username='laxman')
+        is_follow = False
+        if user in follow.following.all():
+            is_follow = True
         var = {
+            'id':blog_id,
             'author': name[0],
             'heading': row[1],
             'content': row[2],
             'post_date': val,
             'interests': row[4],
-            'cover_photo': row[5],
-            'readtime': minutes
+            'cover_photo': cov,
+            'readtime': minutes,
+            'upvote':upvote,
+            'total_upvote':total_upvotes,
+            'is_follow':is_follow
         }
 
         return Response(var)
@@ -238,6 +323,76 @@ class BlogbyIdView2(APIView):
 class BlogView2(APIView):
 
     def get(self, request, interest_name):
+        if interest_name == "yourfeed":
+            user = User.objects.get(username='laxman')
+            user_profile = profile.objects.get(user=user)
+            data = []
+            for i in user_profile.interest.all():
+                qs = Blog.objects.filter(interests=i)
+                print(i,qs)
+                for j in qs:
+                    date = str(j.post_date).split()
+                    date_str = date[0]
+                    date_val = date_str.split('-')
+                    x = datetime.datetime(int(date_val[0]), int(date_val[1]), int(date_val[2]))
+                    result = readtime.of_text(j.content)
+                    minutes = result.minutes
+                    val = x.strftime('%Y %b %d')
+                    link = str(j.cover_photo)
+                    new_one = False
+                    p = link.find('/fit/t')
+                    if p != -1:
+                        new_one = True
+                        f = link.split('/')
+                        for index, kl in enumerate(f):
+                            if kl == 't':
+                                f[index + 1] = 1110
+                                f[index + 2] = 732
+                        cov = f[0]
+
+                        for po in f[1:]:
+                            cov = cov + '/' + str(po)
+                    link = str(j.cover_photo)
+                    p = link.find('/freeze/focal')
+                    if p != -1:
+                        new_one = True
+                        f = link.split('/')
+                        for index, kl in enumerate(f):
+                            if kl == 'focal':
+                                f[index + 1] = 1110
+                                f[index + 2] = 732
+                        cov = f[0]
+                        for po in f[1:]:
+                            cov = cov + '/' + str(po)
+                    link = str(j.cover_photo)
+                    p = link.find('/freeze/max')
+                    if p != -1:
+                        new_one = True
+                        f = link.split('/')
+                        for index, kl in enumerate(f):
+                            if kl == 'max':
+                                f[index + 1] = 1050
+                        cov = f[0]
+                        for po in f[1:]:
+                            cov = cov + '/' + str(po)
+                    if new_one == False:
+                        cov = j.cover_photo
+                    # print(cov,end = ' ')
+                    # print(i[5])
+                    var = {
+                        'id': j.id,
+                        'author': j.author,
+                        'heading': j.heading,
+                        'content': j.content,
+                        'post_date': val,
+                        'interests': j.interests,
+                        'cover_photo': cov,
+                        'readtime': minutes
+                    }
+                    data.append(var)
+            shuffle(data)
+            return Response(data)
+
         cur = conn.cursor()
         va = "SELECT * FROM blog_interest WHERE interest_name = '" + str(interest_name)+"';"
         cur.execute(va)
@@ -256,6 +411,47 @@ class BlogView2(APIView):
             result=readtime.of_text(i[2])
             minutes=result.minutes
             val = x.strftime('%Y %b %d')
+            link = str(i[5])
+            new_one = False
+            p = link.find('/fit/t')
+            if p != -1:
+                new_one = True
+                f = link.split('/')
+                for index,kl in enumerate(f):
+                    if kl =='t':
+                        f[index+1] = 1110
+                        f[index+2] = 732
+                cov = f[0]
+
+                for po in f[1:]:
+                    cov = cov + '/' + str(po)
+            link = str(i[5])
+            p = link.find('/freeze/focal')
+            if p != -1:
+                new_one = True
+                f = link.split('/')
+                for index,kl in enumerate(f):
+                    if kl == 'focal':
+                        f[index+1] = 1110
+                        f[index+2] = 732
+                cov = f[0]
+                for po in f[1:]:
+                    cov = cov + '/' + str(po)
+            link = str(i[5])
+            p = link.find('/freeze/max')
+            if p != -1:
+                new_one = True
+                f = link.split('/')
+                for index, kl in enumerate(f):
+                    if kl == 'max':
+                        f[index + 1] = 1050
+                cov = f[0]
+                for po in f[1:]:
+                    cov = cov + '/' + str(po)
+            if new_one == False:
+                cov = i[5]
+            # print(cov,end = ' ')
+            # print(i[5])
             var = {
                 'id':i[6],
                 'author':name[0],
@@ -263,8 +459,103 @@ class BlogView2(APIView):
                 'content':i[2],
                 'post_date':val,
                 'interests':i[4],
-                'cover_photo':i[5],
+                'cover_photo':cov,
                 'readtime':minutes
             }
             data.append(var)
         return Response(data)
+
+
+
+class likebutton(APIView):
+
+    def patch(self, request):
+        print(request.data)
+        blog_id=request.data['id']
+        username=request.data['username']
+        obj=Blog.objects.get(id=blog_id)
+        user=User.objects.get(username=username)
+        flag=False
+        if user in obj.upvotes.all():
+            obj.upvotes.remove(user)
+        else:
+            flag=True
+            obj.upvotes.add(user)
+        obj.save()
+        total_upvote = len(obj.upvotes.all())
+        data = {'upvote': flag, 'total_upvote': total_upvote}
+        return Response(data)
+
+class BookmarkView(APIView):
+
+    def post(self,request):
+        print(request.data)
+        blog_id = request.data['id']
+        username = request.data['username']
+        blog = Blog.objects.get(id=blog_id)
+        user = User.objects.get(username=username)
+        bookmark=Bookmark.objects.get(user_id=user)
+        flag = False
+        if blog in bookmark.bookmark.all():
+            bookmark.bookmark.remove(blog)
+        else:
+            flag = True
+            bookmark.bookmark.add(blog)
+        bookmark.save()
+        return Response({'bookmark': flag})
+
+class followview(APIView):
+    def get(self,request):
+        obj = User.objects.all()
+        data=[]
+        for i in obj:
+            var = {'username':i.username}
+            data.append(var)
+        return Response(data)
+    def post(self,request):
+        username = request.data['username']
+        following_id=request.data['id']
+        user=User.objects.get(username=username)
+        following_id = User.objects.get(username=following_id)
+        following=Follower.objects.get(follower=following_id)
+        flag = False
+        if user in following.following.all():
+            following.following.remove(user)
+        else:
+            flag = True
+            following.following.add(user)
+        following.save()
+        print(following.following.all())
+        return Response({'flag': flag})
+
+
+class followers(APIView):
+    def get(self, request,user_id):
+        user=User.objects.get(username=user_id)
+        follower=Follower.objects.get(follower=user)
+        data = []
+        print(follower.following)
+        for i in follower.following.all():
+            f = User.objects.get(username=i)
+            var = {
+                'follower_username': f.username
+            }
+            data.append(var)
+        return Response(data)
+
+
+class following(APIView):
+    def get(self, request,user_id):
+        user=User.objects.get(username=user_id)
+        qs = Follower.objects.all()
+        data = []
+        for i in qs:
+            if i !=user:
+                if user in i.following.all():
+                    f = User.objects.get(username = i.follower)
+                    var = {
+                        'following_username': f.username
+                    }
+                    data.append(var)
+        return Response(data)
+

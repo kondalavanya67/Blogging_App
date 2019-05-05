@@ -23,6 +23,7 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
+from .models import *
 from rest_framework import status
 from registration.tokens import account_activation_token
 conn=psycopg2.connect(host="127.0.0.1", database="blog", user="postgres", password="password")
@@ -137,9 +138,10 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
-        return redirect('http://127.0.0.1:8080/interest')
-
+        Bookmark.objects.create(user=user)
+        profile.objects.create(user=user)
+        Follower.objects.create(follower=user)
+        return redirect('http://127.0.0.1:8080/')
     else:
         return HttpResponse('Activation link is invalid!')
 

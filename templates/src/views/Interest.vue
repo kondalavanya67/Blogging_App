@@ -3,12 +3,9 @@
         <SubNav/>
         <v-container>
             <v-layout row>
-                <v-flex lg3 md3>
-                    <SideMenu v-bind:items="getTopics"/>
-                </v-flex>
-                <v-flex lg9 md9>
-                    <v-layout row wrap class="">
-                        <InterestCard v-for="(i) in 6" :key="i"  class="mx-5 my-3"/>
+                <v-flex lg12 md12>
+                    <v-layout row wrap class="ml-5">
+                        <InterestCard v-for="topic in getTopics" :key="topic.id"  v-bind:topic="topic" class="mx-3 my-3"/>
                     </v-layout>
                 </v-flex>
             </v-layout>
@@ -19,7 +16,6 @@
 
 <script>
 import InterestCard from '../components/interest-card'
-import SideMenu from '../components/side-menu'
 import SubNav from '../components/SubNav'
 import { mapGetters } from 'vuex';
 
@@ -28,11 +24,11 @@ export default {
 
     components:{
         InterestCard,
-        SideMenu,
         SubNav
     },
 
     data: () => ({
+        loaded:false
     }),
 
     computed: {
@@ -40,6 +36,17 @@ export default {
             'getTopics'
         ])
     },
+
+    async mounted(){
+        this.loaded = false
+        var url = 'http://localhost:8000/api/interests/';
+        var req = new Request(url)
+        this.$store.state.topics = await fetch(req)
+                                    .then(function (response) {
+                                        return response.json();
+                                    })
+        this.loaded = true
+    }
        
     
 

@@ -2,11 +2,11 @@
   <v-container>
       <v-layout row class="mt-5 pt-5">
           <v-flex md2 lg2>
-               <SideMenu v-bind:items="profile"/>
+               <SideMenu v-bind:items="getProfile"/>
           </v-flex>
           <v-flex md10 lg10 class="px-3">  
           
-            <div v-if="this.$store.state.tab == 'Profile'">
+            <div v-if="getTab == 'Profile'">
               <v-layout row>
                     <v-flex xs12 sm12 lg4 md3>
                         <v-img
@@ -19,7 +19,7 @@
 
                     <v-flex xs12 sm12 lg7 md9>
                         <v-card-title primary-title class="pl-5">
-                            <h1 class="display-2 font-weight-bold md-0">John Doe</h1>
+                            <h1 class="display-2 font-weight-bold md-0">Laxman</h1>
                         </v-card-title>
                     </v-flex>
                     
@@ -27,15 +27,15 @@
             </div>
 
             
-            <div v-if="this.$store.state.tab == 'Posts'">
+            <div v-if="getTab == 'Posts'">
               <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog"  />
             </div>
 
-            <div v-if="this.$store.state.tab == 'Drafts'">
+            <div v-if="getTab == 'Drafts'">
               <BlogCard v-for="blog in getBlogData" :key="blog.title" v-bind:blog="blog"  />
             </div>
 
-            <div v-if="this.$store.state.tab == 'Followers'">
+            <div v-if="getTab == 'Followers'">
               <v-list>
                 <v-list-tile
                   v-for="item in items"
@@ -54,7 +54,7 @@
               </v-list>
             </div>
 
-          <div v-if="this.$store.state.tab == 'Following'">
+          <div v-if="getTab == 'Following'">
               <v-list>
                 <v-list-tile
                   v-for="item in items"
@@ -83,12 +83,14 @@
 
 <script>
 import SideMenu from '../components/side-menu'
-import { mapState } from 'vuex';
+import BlogCard from '../components/blog-card'
+import { mapGetters } from 'vuex';
 
 export default {
     name:'Profile',
     components:{
-        SideMenu
+        SideMenu,
+        BlogCard,
     },
     data: () => ({
       width: 300,
@@ -100,15 +102,27 @@ export default {
         ]
     }),
 
-     mounted() {
-      this.$store.state.tab = 'profile'
+    async created() {
+      this.$store.state.tab = 'Profile'
+
+      var url = 'http://localhost:8000/api/profileposts/';
+      var req = new Request(url)
+      this.$store.state.blogData = await fetch(req)
+                                    .then(function (response) {
+                                      return response.json();
+                                    })
+
     },
 
     computed: {
-      ...mapState([
-        'profile'
+      ...mapGetters([
+        'getBlogData',
+        'getProfile',
+        'getTab'
       ])
+
     },
+
     
 }
 </script>

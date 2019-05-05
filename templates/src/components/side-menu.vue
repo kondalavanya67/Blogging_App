@@ -2,7 +2,7 @@
     <div class="sidemenu">
       <v-navigation-drawer permanent>
             <v-list class="pt-0 pl-2">
-                <v-flex  v-for="item in items" :key="item.title" @click="showProfile()">
+                <v-flex  v-for="item in items" :key="item.title">
                   <p class="headline font-weight-bold link" @click="updateTab(item.title)">{{ item.title }}</p>
                 </v-flex>
             </v-list>

@@ -1,16 +1,16 @@
 <template>
-            <v-layout>
+          <v-layout>
           <v-flex xs12 sm12 md12 lg12 class="mb-5">
             <v-card flat hover>
               <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+                :src="blog.urlToImage"
                 aspect-ratio="2.75"
               ></v-img>
 
               <v-card-title primary-title>
                 <div>
-                  <h3 class="subheading font-weight-bold mb-2 ">Kangaroo Valley Safari</h3>
-                  <div class="caption"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas sit eum provident, doloribus maxime neque possimus nostrum </div>
+                  <h3 class="subheading font-weight-bold mb-2 ">{{blog.title || truncate(10)}}</h3>
+                  <div class="caption"> {{blog.description || truncate(15) }} </div>
                 </div>
               </v-card-title>
 
@@ -25,6 +25,17 @@
 
 <script>
 export default {
-  name:'FeaturedBlogCard'
+  name:'FeaturedBlogCard',
+   props:{
+        blog:{
+            author:String,
+            content:String,
+            post_date:String,
+            heading:String,
+            cover_photo:String,
+            readtime:Number
+        },
+
+    }
 }
 </script>

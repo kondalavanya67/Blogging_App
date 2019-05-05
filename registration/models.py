@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
+from blog.models import Blog
 # Create your models here.
 
 
@@ -58,31 +58,47 @@ def upload_image_path(instance, filename):
 #     def get_absolute_url_profile(self):
 #         return reverse('registration:show_profile', kwargs={'pk': self.pk})
 class profile(models.Model):
-
     user = models.ForeignKey(User, on_delete = models.CASCADE, null=True, blank=True)
-    fullname = models.CharField(max_length=120)
-    age=models.IntegerField(default=25, validators=[MaxValueValidator(100), MinValueValidator(1)])
-    gender=models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
-    phone_no = models.CharField(max_length=11)
+    fullname = models.CharField(max_length=120, null=True, blank=True)
+    age=models.IntegerField(default=25, validators=[MaxValueValidator(100), MinValueValidator(1)], null=True, blank=True)
+    gender=models.CharField(max_length=10, choices=GENDER_CHOICES, default='male', null=True, blank=True)
+    phone_no = models.CharField(max_length=11, null=True, blank=True)
     interest=models.ManyToManyField(interest, blank=True)
-    post=models.ManyToManyField(Blog, blank=True)
+    #post=models.ManyToManyField(Blog, blank=True)
 
     def __str__(self):
         return str(self.user)
-
-    def get_absolute_url(self):
-        return "/user/{id}/".format(id=self.id)
-
-    def get_absolute_url_profile(self):
-        return  reverse('registration:show_profile', kwargs={'pk':self.pk})
+    #
+    # def get_absolute_url(self):
+    #     return "/user/{id}/".format(id=self.id)
+    #
+    # def get_absolute_url_profile(self):
+    #     return  reverse('registration:show_profile', kwargs={'pk':self.pk})
+# class profile1(models.Model):
+#     user = models.ForeignKey(User, on_delete = models.CASCADE, null=True, blank=True)
+#     fullname = models.CharField(max_length=120, null=True, blank=True)
+#     age=models.IntegerField(default=25, validators=[MaxValueValidator(100), MinValueValidator(1)], null=True, blank=True)
+#     gender=models.CharField(max_length=10, choices=GENDER_CHOICES, default='male', null=True, blank=True)
+#     phone_no = models.CharField(max_length=11, null=True, blank=True)
+#     interest=models.ManyToManyField(interest, blank=True)
+#     #post=models.ManyToManyField(Blog, blank=True)
+#
+#     def __str__(self):
+#         return str(self.user)
 
 
 class Follower(models.Model):
-    follower = models.ForeignKey(profile, related_name='following', on_delete=models.CASCADE)
-    following = models.ForeignKey(profile, related_name='followers', on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
+    following = models.ManyToManyField(User, related_name='followers',blank=True)
+    #
+    # class Meta:
+    #     unique_together = ('follower', 'following')
+    #
+    # def __unicode__(self):
+    #     return u'%s follows %s' % (self.follower, self.following)
 
-class Meta:
-    unique_together = ('follower', 'following')
 
-def __unicode__(self):
-    return u'%s follows %s' % (self.follower, self.following)
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    bookmark=models.ManyToManyField(Blog, blank=True)
