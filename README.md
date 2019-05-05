@@ -43,8 +43,16 @@ inserted.
 ### Reader - Use Case
 
 The Reader can read articles of his interest. He
-can view bookmarked articles in his profile. 
+can view bookmarked articles in his profile.
 
+
+## ER-Diagram
+
+![alt text](https://github.com/Vineet-Sharma29/Blogging_App/blob/master/docs/er.png)
+
+## Use Case Diagram
+
+![alt text](https://github.com/Vineet-Sharma29/Blogging_App/blob/master/docs/DBMS.png)
 
 ## How to Run This Project
 
