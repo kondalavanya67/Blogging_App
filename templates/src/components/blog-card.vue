@@ -90,7 +90,12 @@ export default {
             heading:String,
             cover_photo:String
         }
-    }
+    },
+    mounted() {
+        if(this.blog.cover_photo.includes("max")){
+            
+        }
+    },
 }
 </script>
 
