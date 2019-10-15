@@ -61,3 +61,4 @@ In current directory run command ```pip install -r requirements.txt``` and then 
 
 ### Client
 Run ```cd templates```, followed by ```npm i``` to all dependencies related to vue. To run client server run ```npm run serve```
+### nothing
